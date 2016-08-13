@@ -1,0 +1,46 @@
+<div data-page="cards" class="page">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="left"><a href="#/app/home" class="back link icon-only"><i class="icon icon-back"></i></a></div>
+      <div class="center">Procurements</div>
+      <div class="right">
+        <a class="link open-panel icon-only"><i class="icon icon-bars"></i></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pop Over -->
+  <a style="background-color:#009688" href="#/app/add_procurement" class="floating-button"><i class="icon icon-plus"></i></a>
+
+  <div class="page-content">
+    
+
+    <div class="content-block-title">Procurement Lists </div>
+    <div ng-repeat="dta in data" class="card ">
+      <div class="card-content"> 
+        <div class="card-content-inner"> 
+          <p class="color-gray">Collected on {{dta.SamplingDate | date}}</p>
+          <p>
+            Commodity : {{dta.Commodity}}<br>
+            Farmer    : {{dta.FarmerName}}
+          </p>
+        </div>
+      </div>
+      <div class="card-footer"><a href="#/app/detail_procurement/{{dta.ProcurementId}}"  class="link">View</a><a  class="link">Tests</a></div>
+    </div>
+    <div ng-if="!data.length" class="card">
+      <div class="card-content">
+        <div class="card-content-inner"> 
+          <p style="color:#e70707">No Procurement found</p>
+        </div>
+      </div>
+    </div>
+ 
+  </div>
+
+
+ 
+
+</div>
+
+

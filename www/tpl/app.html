@@ -1,0 +1,150 @@
+<!-- Start Left Menu -->
+<div class="panel panel-left panel-cover">
+  <div class="view navbar-fixed">
+    <div class="pages">
+      <div data-page="panel-left" class="page">
+
+        <div class="page-content" style="padding-top:0px;">
+            <div class="x_logo_block">
+              <img src="assets/img/ncml_logo.jpg">
+            </div>
+            <div class="content-block-title x_menu_title">Menus</div>
+            <div class="list-block x_menu_list">
+                <ul>
+                    <li>
+                        <a href="#/app/list_procurement/all" class="item-link close-panel no-ripple">
+                            <div class="item-content">
+                              <div class="item-media"><i class="icon icon-f7"></i></div>
+                              <div class="item-inner">
+                                <div class="item-title">Procurements</div>
+                              </div>
+                            </div>
+                          </a>
+                    </li>
+
+                    <!-- <li>
+                        <a href="#/app/tests_temp" class="item-link close-panel  no-ripple">
+                            <div class="item-content">
+                              <div class="item-media"><i class="icon icon-f7"></i></div>
+                              <div class="item-inner">
+                                <div class="item-title">Tests</div>
+                              </div>
+                            </div>
+                          </a>
+                    </li> -->
+
+                    <li>
+                        <a ng-click="logout()" class="item-link close-panel  no-ripple">
+                            <div class="item-content">
+                              <div class="item-media"><i class="icon icon-f7"></i></div>
+                              <div class="item-inner">
+                                <div class="item-title">Logout</div>
+                              </div>
+                            </div>
+                          </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Left Menu -->
+
+<!-- Start Right Menu -->
+<div class="panel panel-right panel-reveal">
+  <div class="view view-right">
+    <div class="pages navbar-fixed">
+      <div data-page="panel-right1" class="page">
+        <div class="navbar">
+          <div class="navbar-inner">
+            <div class="center">Right Panel</div>
+          </div>
+        </div>
+        <div class="page-content">
+          <div class="content-block">
+            <p>This is a right side panel. You can close it by clicking outsite or on this link: <a href="#" class="close-panel">close me</a>. You can put here anything, even another isolated view, try it: </p>
+          </div>
+          <div class="list-block">
+            <ul>
+              <li><a href="panel-right2.html" class="item-link">
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Right panel page 2</div>
+                    </div>
+                  </div></a></li>
+              <li><a href="panel-right3.html" class="item-link">
+                  <div class="item-content">
+                    <div class="item-inner">
+                      <div class="item-title">Right panel page 3</div>
+                    </div>
+                  </div></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Right Menu -->
+
+<!-- Start Main View -->
+<div class="views">
+    <div class="view view-main">
+        <div ui-view  class="pages navbar-fixed">
+        </div>
+    </div>
+</div>
+<!-- End Main View -->
+
+<!-- Start Extras -->
+<!--  Start Add new popup -->
+<div class="popover popover-contacts">
+    <div class="popover-inner">
+      <div class="list-block media-list">
+        <ul>
+          <li>
+            <a href="#/app/add_procurement" class="item-link item-content bg-purple color-white ripple-white">
+              <div class="item-media"><i class="icon ks-icon-edit"></i></div>
+              <div class="item-inner">
+                <div class="item-title-row">
+                  <div class="item-title">Add New</div>
+                </div>
+              </div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+</div>
+<!--  End Add new popup -->
+
+<!-- Start Action button -->
+
+    <div class="popover popover-menu">
+      <div class="popover-inner">
+        <div class="list-block">
+          <ul class="close-popover">
+            <li><a href="#/app/edit_procurement/{{root_edit_id}}" class="list-button no-ripple item-link close-popover">Edit</a></li>
+            <li><a href="#/app/tests/{{root_edit_id}}" class="list-button no-ripple item-link close-popover">Tests</a></li>
+            <li><a ng-click="delete()" class="list-button no-ripple item-link close-popover">Delete</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <div class="popover popover-menu-test">
+      <div class="popover-inner">
+        <div class="list-block">
+          <ul class="close-popover">
+            <li><a ng-click="testUpdate()" class="list-button no-ripple item-link close-popover">Update</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+

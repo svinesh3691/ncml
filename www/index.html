@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-bar-style" content="black">
+        <meta name="theme-color" content="#2196f3">
+        <title>NCML</title>
+        
+        <link rel="stylesheet" href="assets/css/custom.css">
+        
+        <link rel="stylesheet" href="assets/7/css/framework7.material.css">
+        <link rel="stylesheet" href="assets/7/css/framework7.material.colors.css">
+        <link rel="stylesheet" href="assets/css/kitchen-sink.css">
+        <link rel="icon" href="assets/img/icon.png">
+        <script type="text/javascript" src="cordova.js"></script>
+
+    </head>
+    <body onload="onLoad()">
+        
+
+        <div class="statusbar-overlay"></div>
+        <div class="panel-overlay"></div>
+        <div ui-view style="height:100%"></div>
+        
+
+
+        <!-- Angular Start ###################################################### -->
+
+        <!-- Angular Core File -->
+        <script src="ang/angular.js"></script>
+
+        <!-- Vendor -->
+        <script src="ang/angular-ui-router/angular-ui-router.js"></script> 
+        <script src="ang/ngstorage/ngStorage.js"></script> 
+        
+
+
+        <!-- App -->
+        <script src="ajs/config.js"></script>
+        <script src="ajs/app.js"></script>
+        <script src="ajs/config.run.js"></script>
+        <script src="ajs/router.js"></script>
+
+        <!-- Controllers  -->
+        <script src="ajs/controllers/authenticate.controller.js"></script>
+        <script src="ajs/controllers/procurement.controller.js"></script>
+        <script src="ajs/controllers/test.controller.js"></script>
+        <!-- Directives  -->
+        <!-- Services  -->
+        <script src="ajs/services/services.js"></script>
+        <!-- Factories  -->
+        <script src="ajs/services/factories.js"></script>
+        <!-- Providers  -->
+
+        <!-- Angular End ###################################################### -->
+
+        <script type="text/javascript" src="assets/7/js/framework7.js"></script>
+        <script type="text/javascript" src="assets/js/kitchen-sink.js"></script>
+        
+    </body>
+</html>

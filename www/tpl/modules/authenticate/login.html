@@ -1,0 +1,51 @@
+<div data-page="login-screen-embedded" class="page">
+  <div class="page-content login-screen-content" style="background-image: url(assets/img/login.jpg);">
+    <div  style="margin-top: 30px;class="content-block">
+      <div class="x_logo_block_login">
+         <img src="assets/img/ncml_logo.jpg" style="border: 12px solid white;">
+        </div>
+    </div>
+
+    <div class="login-screen-title" style="width: 78%;margin-left: 11%;   border-radius: 17px; color:#fff">Login</div>
+
+
+    <form ng-submit="signIn()" style="width: 78%;margin-left: 11%;">
+      <div class="list-block inputs-list">
+        <ul style="background-color: rgba(255, 255, 255, 0.47);padding-bottom: 5%; border-radius: 17px;border: 1px solid #00bcd4;">
+          <li class="item-content">
+            <div class="item-inner"> 
+              <div class="item-title label" style="color: #fff;font-size: 19px;">Username</div>
+              <div class="item-input">
+                <input type="text" name="username" ng-model="data.username" placeholder="Your username"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner"> 
+              <div class="item-title label" style="color: #fff;font-size: 19px;">Password</div>
+              <div class="item-input">
+                <input type="password" name="password" ng-model="data.password" placeholder="Your password"/>
+              </div>
+            </div>
+          </li>
+          <li class="item-content">
+            <div class="item-inner"> 
+              <div class="item-title label" style="color: #fff;font-size: 19px;">Lab code</div>
+              <div class="item-input">
+                <input type="text" name="labcode" ng-model="data.labcode" placeholder="Your labcode"/>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="content-block">
+        <button class="button button-big no-ripple" type="submit" style="margin: auto;background-color:white;color: #000;">Sign In</button>
+      </div>
+
+      <div class="content-block">
+        <div class="list-block-label">The username and password fot this app is 'admin' and 'password' respectively</div>
+      </div>
+
+    </form>
+  </div>
+</div>
