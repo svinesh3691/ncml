@@ -1,4 +1,4 @@
-<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.ncml.app" version="1.0.0">
+<widget xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" id="com.ncml.vin" version="1.0.0">
   <name>NCML</name>
   <description>Android Application for NCML</description>
   <author href="http://phonegap.com" email="support@phonegap.com">S Vinesh</author>
