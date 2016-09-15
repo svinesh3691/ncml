@@ -51,9 +51,17 @@ app.config(['$stateProvider','$urlRouterProvider',
               /*Test Management*/
               .state('app.tests', {
                   url: '/tests/:Id',
-                  templateUrl: 'tpl/modules/test/page.html',
+                  templateUrl: 'tpl/modules/test/tests.html',
                   controller: 'tests'
               })
+
+              .state('app.tests_add', {
+                  url: '/tests_add/:Id',
+                  templateUrl: 'tpl/modules/test/tests_add.html',
+                  controller: 'tests_add'
+              })
+
+
               .state('app.tests_temp', {
                   url: '/tests_temp',
                   templateUrl: 'tpl/modules/test/temp.html',

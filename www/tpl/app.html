@@ -32,6 +32,17 @@
                             </div>
                           </a>
                     </li> -->
+                    <li>
+                        <a ng-click="sync_raw_data()" class="item-link close-panel  no-ripple">
+                            <div class="item-content">
+                              <div class="item-media"><i class="icon icon-f7"></i></div>
+                              <div class="item-inner">
+                                <div class="item-title">Sync Raw data</div>
+                              </div>
+                            </div>
+                          </a>
+                    </li>
+
 
                     <li>
                         <a ng-click="logout()" class="item-link close-panel  no-ripple">
@@ -142,9 +153,22 @@
         <div class="list-block">
           <ul class="close-popover">
             <li><a ng-click="testUpdate()" class="list-button no-ripple item-link close-popover">Update</a></li>
+            <li> <a ng-click="addTests()" class="list-button no-ripple item-link close-popover">Add Tests </a></li>
           </ul>
         </div>
       </div>
     </div>
+
+
+    <div class="popover popover-menu-test-add">
+      <div class="popover-inner">
+        <div class="list-block">
+          <ul class="close-popover">
+            <li><a ng-click="test_add_Update()" class="list-button no-ripple item-link close-popover">Update</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
 
 

@@ -9,7 +9,9 @@ app.factory("seven", ['$http', function($http) {
 
 app.factory("services", ['$http', function($http) {
     // var serviceBase = 'http://localhost/OFC/factory/pro/';
-    var serviceBase = 'http://demo.vintechnosys.com/oddo_api/';
+    // var serviceBase = 'http://demo.vintechnosys.com/oddo_api/';
+    var serviceBase = 'http://www.ncmlapi.kritilims.in/Service.asmx/';
+    
     var obj = {};
     obj.master = function(func_name,post_data){
         return $http.post(serviceBase + func_name, post_data);

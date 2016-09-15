@@ -4,7 +4,8 @@ app.controller('login', ['$scope','fns','seven','$state','services',
         if(localStorage.token) $state.go('app.home');
         $scope.data = {};
 
-        $scope.data.imei = localStorage.imei || device.uuid+'#'+device.version
+        // $scope.data.imei = localStorage.imei || device.uuid+'#'+device.version
+        $scope.data.imei = 'poda';
         alert($scope.data.imei);
 
 
@@ -30,8 +31,8 @@ app.controller('login', ['$scope','fns','seven','$state','services',
 }]);
 
 // App Controller
-app.controller('app', ['$scope','seven','$state',
-    function ( $scope, seven, $state ) {
+app.controller('app', ['$scope','seven','$state','services',
+    function ( $scope, seven, $state, services ) {
             seven.hideIndicator();
             // Logout Function
             $scope.logout = function() {
@@ -42,6 +43,17 @@ app.controller('app', ['$scope','seven','$state',
                         window.location.href = '#/authenticate/login';
                     },1000)
             }
+
+            $scope.sync_raw_data = function() {
+                    seven.showIndicator();
+                    services.master_get('GetAllData?Labid=1').then(function(res){
+                        seven.hideIndicator();
+                        localStorage.ncml_raw_data_lab = JSON.stringify(res.data.Lab);
+                        localStorage.ncml_data_registeration = JSON.stringify(res.data.Registration);
+                    })
+                    
+            }
+
             // Go back function
             $scope.goBack = function() {
                 window.history.go(-1);

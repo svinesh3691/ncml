@@ -2,35 +2,68 @@
 app.controller('tests', ['$scope','fns','seven','$stateParams', '$rootScope',
     function ( $scope , fns , seven , $stateParams , $rootScope) {
         $scope.id = $stateParams.Id; 
-        fns.query('SELECT * FROM Test WHERE TestId = ?',[$scope.id],function(res){
-            // console.log(JSON.stringify(res.result.rows.item(0)));
-                // $scope.data = res.result.rows.item(0);
-                $scope.data = {
-                    TestId:res.result.rows.item(0).TestId,
-                    ProcurementId:res.result.rows.item(0).ProcurementId,
-                    Damaged:res.result.rows.item(0).Damaged,
-                    DisColoured:res.result.rows.item(0).DisColoured,
-                    ChalkyGrain:res.result.rows.item(0).ChalkyGrain,
-                    RedGrains:res.result.rows.item(0).RedGrains,
-                    AdMixtures:res.result.rows.item(0).AdMixtures,
-                    DeHusked:res.result.rows.item(0).DeHusked,
-                    Moisture:res.result.rows.item(0).Moisture,
-                };
+        
+
+
+        fns.query('SELECT * FROM Test WHERE ProcurementId = ?',[$scope.id],function(res){
+            console.log(res.result.rows.length);
+                console.log(JSON.parse(res.result.rows.item(0).Damaged));
+                $scope.tests = JSON.parse(res.result.rows.item(0).Damaged);
                 $scope.$apply();
+                
         });
 
+      
+         $rootScope.addTests = function(){
+            window.location = '#/app/tests_add/'+$scope.id;
 
+         }
 
-        $rootScope.testUpdate = function(){
-
+         $rootScope.testUpdate = function(){
+                console.log($scope.tests);
                 seven.showPreloader('Updating..');
-                fns.query('UPDATE Test SET Damaged = ? ,DisColoured = ? ,ChalkyGrain = ? ,RedGrains = ? ,AdMixtures = ? ,DeHusked = ? ,Moisture = ?   WHERE TestId = ?',[$scope.data.Damaged, $scope.data.DisColoured, $scope.data.ChalkyGrain, $scope.data.RedGrains, $scope.data.AdMixtures, $scope.data.DeHusked, $scope.data.Moisture, $scope.id],function(res){
+                fns.query('UPDATE Test SET Damaged = ?  WHERE ProcurementId = ?',[JSON.stringify($scope.tests), $scope.id],function(res){
                     seven.hidePreloader();
                     seven.alert('Saved Successfully')
-                    // window.location.href = '#/app/detail_procurement/'+$scope.id;
+                    // window.location.href = '#/app/tests/'+$scope.id;
                 });
         }
 }]);
+
+
+
+
+app.controller('tests_add', ['$scope','fns','seven','$stateParams', '$rootScope',
+    function ( $scope , fns , seven , $stateParams , $rootScope) {
+        $scope.id = $stateParams.Id; 
+        
+
+        fns.query('SELECT * FROM Test WHERE ProcurementId = ?',[$scope.id],function(res){
+            console.log(res.result.rows.length);
+                console.log(JSON.parse(res.result.rows.item(0).Damaged));
+                $scope.tests = JSON.parse(res.result.rows.item(0).Damaged);
+                $scope.$apply();
+                
+        });
+
+       
+
+         $rootScope.addTests = function(){
+            window.location = '#/app/tests_add/'+$scope.id;
+
+         }
+
+         $rootScope.test_add_Update = function(){
+                console.log($scope.tests);
+                seven.showPreloader('Updating..');
+                fns.query('UPDATE Test SET Damaged = ?  WHERE ProcurementId = ?',[JSON.stringify($scope.tests), $scope.id],function(res){
+                    seven.hidePreloader();
+                    seven.alert('Saved Successfully')
+                    window.location.href = '#/app/tests/'+$scope.id;
+                });
+        }
+}]);
+
 
 
 

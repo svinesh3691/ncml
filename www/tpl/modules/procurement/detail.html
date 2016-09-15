@@ -27,14 +27,7 @@
                 </div>
               </div>
             </li>
-            <li class="item-content">
-              <div class="item-inner">
-                <div class="item-subtitle">Commodity</div>
-                <div class="item-title-row">
-                  <div class="item-title">{{data.Commodity}}</div>
-                </div>
-              </div>
-            </li>
+            
             <li class="item-content">
               <div class="item-inner">
                 <div class="item-subtitle">SamplingDate</div>
@@ -51,6 +44,69 @@
                 </div>
               </div>
             </li>
+
+            <li class="item-content">
+              <div class="item-inner">
+                <div class="item-subtitle"> Sample Category</div>
+                <div class="item-title-row">
+                  <div class="item-title">{{sample_cats[data.sample_category].SampleCategory_Name }}</div>
+                </div>
+              </div>
+            </li>
+
+
+            <li class="item-content">
+              <div class="item-inner">
+                <div class="item-subtitle"> Product Category</div>
+                <div class="item-title-row">
+                  <div class="item-title">{{sample_cats[data.sample_category].ProductCategory[data.product_category].ProductCategory_Name }}</div>
+                </div>
+              </div>
+            </li>
+
+
+            <li class="item-content">
+              <div class="item-inner">
+                <div class="item-subtitle"> Sample </div>
+                <div class="item-title-row">
+                  <div class="item-title">{{sample_cats[data.sample_category].ProductCategory[data.product_category].Sample[data.sample].Sample_Name }}</div>
+                </div>
+              </div>
+            </li>
+
+
+
+            <li class="item-content">
+              <div class="item-inner">
+                <div class="item-subtitle"> Sample Item </div>
+                <div class="item-title-row">
+                  <div class="item-title">{{sample_cats[data.sample_category].ProductCategory[data.product_category].Sample[data.sample].SampleItem[data.sample_item].SampleItem_Name }}</div>
+                </div>
+              </div>
+            </li>
+
+
+
+
+            <li ng-repeat="field in fields" class="item-content">
+              <div class="item-inner">
+                <div class="item-subtitle"> {{field.title}} </div>
+                <div class="item-title-row">
+                  <div class="item-title">{{data['extra_fields'+$index] }}</div>
+                </div>
+              </div>
+            </li>
+
+
+
+
+
+
+
+
+
+
+
 
             <li class="item-content">
               <div class="item-inner">

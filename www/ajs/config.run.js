@@ -36,4 +36,11 @@ function( $rootScope , $state , $stateParams , seven  , fns ) {
             // console.log('db created');
             tables = fns.createTables(dbCreate);
         }
+
+
+
+
+
+
+
 }])

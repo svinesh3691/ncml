@@ -1,0 +1,69 @@
+<style type="text/css">
+.badge {
+    font-size: 18px;
+  }
+</style>
+<div data-page="form-elements" class="page">
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="left"><a href="#/app/tests/{{id}}" class="back link icon-only"><i class="icon icon-back"></i></a></div>
+      <div class="center">Test Add</div>
+      <div class="right"> <a data-popover=".popover-menu-test-add" class="x_link no-ripple icon-only open-popover"><i class="icon ks-icon-more"></i></a> </div>
+    </div>
+  </div>
+  <div class="page-content">
+    
+    <!-- <div class="x-list-block">
+      <ul>
+          <li ng-repeat="test in tests">
+            <div class="x-item-full"> {{test.TestName}} cvxcv</div>
+            <div class="x-test-result">
+              <div class="x-item-half"> 
+                <div class="item-title x-test-label">Spec</div>
+                <div class="item-input item-input-field">
+                  <input type="text" placeholder="Spec"  readonly value="0.00% t0 3.30%">
+                </div>
+              </div>
+              <div class="x-item-half"> 
+                <div class="item-title x-test-label">Selected</div>
+                <div class="item-input item-input-field">
+                  <input type="checkbox"> 
+                </div>
+              </div>
+            </div>
+          </li>
+
+         
+      </ul>
+    </div> -->
+
+
+    <div class="list-block media-list">
+      <ul>
+        <li ng-repeat="test in tests">
+          <label class="label-checkbox item-content">
+            <input type="checkbox" ng-model="test.added">
+            <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
+            <div class="item-inner">
+              <div class="item-title-row">
+                <div class="item-title">{{test.TestName}}</div>
+              </div>
+              <div class="item-textx">
+                <div class="item-input item-input-field">
+                    <!-- <input type="text"> -->
+                    <select ng-model="test['tesmet']" >
+                                <option ng-selected="test['tesmet'] == $index" ng-repeat="option in test.TestMethod" ng-value="$index">{{option.Method_Name}}</option>
+                    </select>
+                </div>
+
+              </div>
+            </div>
+          </label>
+        </li>
+
+      </ul>
+    </div>
+
+
+  </div>
+</div>

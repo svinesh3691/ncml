@@ -1,3 +1,9 @@
+<style type="text/css">
+.navbar-fixed .page-content {
+    padding-top: 23px;
+}
+
+</style>
 <div data-page="form-elements" class="page">
   <div class="navbar">
     <div class="navbar-inner">
@@ -8,15 +14,15 @@
   </div>
   <div class="page-content">
 
-    <div class="content-block-title">Dynamic Form</div>
+    <!-- <div class="content-block-title">Dynamic Form</div> -->
     <form ng-submit="save(data)">
         <div class="list-block inputs-list">
               <ul>
-                <li ng-repeat="field in fields">
+                <li id="{{field.id}}" ng-repeat="field in fields">
                       <!-- For text fields -->
                       <div ng-if="field.type=='text'" class="item-content">
                         <div class="item-media"><i class="icon {{field.icon}}"></i></div>
-                        <div class="item-inner"> 
+                        <div class="item-inner  not-empty-state"> 
                           <div class="item-title floating-label">{{field.title}}</div>
                           <div class="item-input">
                             <input type="{{field.real_type}}" ng-model="data[field.model]" placeholder=""/>
@@ -27,7 +33,7 @@
                       <!-- For select boxes -->
                       <div  ng-if="field.type=='select'" class="item-content">
                         <div class="item-media"><i class="icon {{field.icon}}"></i></div>
-                        <div class="item-inner"> 
+                        <div class="item-inner  not-empty-state"> 
                           <div class="item-title floating-label">{{field.title}}</div>
                           <div class="item-input">
                             ng-options="option.value as option.caption for option in config.options"
@@ -36,6 +42,79 @@
                           </div>
                         </div>
                       </div>
+
+                      <!-- For agency boxes -->
+                      <div  ng-if="field.type=='select_agency'" class="item-content">
+                        <div class="item-media"><i class="icon {{field.icon}}"></i></div>
+                        <div class="item-inner"> 
+                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-input">
+                            <select  ng-model="data[field.model]" ng-options="option.Customer_ID as option.Customer_Name for option in field.options">
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                      <!-- For sample boxes -->
+                      <div  ng-if="field.type=='select_sample_category'" class="item-content">
+                        <div class="item-media"><i class="icon {{field.icon}}"></i></div>
+                        <div class="item-inner"> 
+                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-input">
+                            <select ng-change="sample_category_selected()" ng-model="data[field.model]" >
+                                <option ng-repeat="option in field.options" ng-value="$index">{{option.SampleCategory_Name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+
+                      <!-- For product category boxes -->
+                      <div  ng-if="field.type=='select_product_category'" class="item-content">
+                        <div class="item-media"><i class="icon {{field.icon}}"></i></div>
+                        <div class="item-inner"> 
+                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-input">
+                            <select ng-change="sample_product_selected()" ng-model="data[field.model]" >
+                                <option ng-repeat="option in field.options" ng-value="$index">{{option.ProductCategory_Name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                      <!-- For sample boxes -->
+                      <div  ng-if="field.type=='select_sample'" class="item-content">
+                        <div class="item-media"><i class="icon {{field.icon}}"></i></div>
+                        <div class="item-inner"> 
+                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-input">
+                            <select ng-change="sample_selected()" ng-model="data[field.model]" >
+                                <option ng-repeat="option in field.options" ng-value="$index">{{option.Sample_Name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+
+                       <!-- For sample item boxes -->
+                      <div  ng-if="field.type=='select_sample_item'" class="item-content">
+                        <div class="item-media"><i class="icon {{field.icon}}"></i></div>
+                        <div class="item-inner"> 
+                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-input">
+                            <select ng-change="sample_item_selected()" ng-model="data[field.model]" >
+                                <option ng-repeat="option in field.options" ng-value="$index">{{option.SampleItem_Name}}</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+
+
 
                 </li>
                 
