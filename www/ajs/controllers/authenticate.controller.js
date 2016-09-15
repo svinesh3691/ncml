@@ -4,14 +4,13 @@ app.controller('login', ['$scope','fns','seven','$state','services',
         if(localStorage.token) $state.go('app.home');
         $scope.data = {};
 
-        // $scope.data.imei = localStorage.imei || device.uuid+'#'+device.version
-        $scope.data.imei = 'poda';
-        alert($scope.data.imei);
-
+        //$scope.data.imei = localStorage.imei || device.uuid+'#'+device.version
+       // alert($scope.data.imei);
+        $scope.data.imei = 'test';
 
         $scope.data.username = 'admin';
         $scope.data.password = 'password';
-        $scope.data.password = 'password';
+        //$scope.data.password = 'password';
         $scope.signIn = function(){
             seven.showIndicator();
             if($scope.data.username == 'admin' && $scope.data.password == 'password'){
