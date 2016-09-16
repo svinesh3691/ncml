@@ -57,13 +57,13 @@ app.controller('detail_procurement',
                 JsonContent = JSON.parse(res.result.rows.item(i).JsonContent);
                 JsonContent.ProcurementId = res.result.rows.item(i).ProcurementId;
                 $scope.data = JsonContent;
-                console.log($scope.data);
-                console.log('$scope.data.sample_category');
-                console.log($scope.data.sample_category);
+                //console.log($scope.data);
+                //console.log('$scope.data.sample_category');
+                //console.log($scope.data.sample_category);
 
                 $scope.fields = [];
                 var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
-                console.log(thisSampleItem.ItemDetails);
+                //console.log(thisSampleItem.ItemDetails);
                 for(var i = 0;i < thisSampleItem.ItemDetails.length; i++) {
 
                     var sampleItemField = {
@@ -185,7 +185,7 @@ app.controller('detail_procurement',
                 }
          
                 function fail(error) {
-                    console.log("fail: " + error.code);
+                    //console.log("fail: " + error.code);
                 }
          
                 function makeid() {
@@ -252,7 +252,7 @@ app.controller('detail_procurement',
 app.controller('edit_procurement',
     ['$scope','fns','seven','$state','$stateParams',
         function ( $scope , fns , seven , $state, $stateParams) {
-          // console.log('Edit Procurement'); 
+          // //console.log('Edit Procurement'); 
 
             //Tou must do raw data sync for this to work
             if(!localStorage.ncml_raw_data_lab || !localStorage.ncml_data_registeration) {
@@ -271,9 +271,9 @@ app.controller('edit_procurement',
                 JsonContent = JSON.parse(res.result.rows.item(i).JsonContent);
                 JsonContent.ProcurementId = res.result.rows.item(i).ProcurementId;
                 $scope.data = JsonContent;
-                // console.log($scope.data);
+                // //console.log($scope.data);
                 $scope.data.SamplingDate = new Date($scope.data.SamplingDate);
-                console.log($scope.data);
+                //console.log($scope.data);
 
 
                 $scope.fields = [
@@ -369,7 +369,7 @@ app.controller('edit_procurement',
 
             $scope.sample_category_selected = function() {
 
-                console.log('sample_category_selected');
+                //console.log('sample_category_selected');
                 $scope.fields = $scope.fields.slice(0,4);
                 
                 $scope.data.product_category = null;
@@ -388,13 +388,13 @@ app.controller('edit_procurement',
 
                 $scope.fields.push(ProductCategoryField);
                     
-                console.log($scope.data);
+                //console.log($scope.data);
 
             }
 
 
             $scope.sample_product_selected = function() {
-                console.log('sample_product_selected');
+                //console.log('sample_product_selected');
                 $scope.data.sample = null;
                 $scope.data.sample_item = null;
                 $scope.fields = $scope.fields.slice(0,5);
@@ -407,13 +407,13 @@ app.controller('edit_procurement',
                      options: sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample
                  }
                  $scope.fields.push(sampleField);
-                console.log($scope.data);
+                //console.log($scope.data);
 
             }
 
 
             $scope.sample_selected = function() {
-                console.log('sample_selected');
+                //console.log('sample_selected');
                 $scope.data.sample_item = null;
                 $scope.fields = $scope.fields.slice(0,6);
                 $scope.data.sample_id =  sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].Sample_ID;
@@ -428,13 +428,13 @@ app.controller('edit_procurement',
 
 
 
-                console.log($scope.data);
+                //console.log($scope.data);
 
             }
 
 
             $scope.sample_item_selected = function() {
-                console.log('sample_item_selected');
+                //console.log('sample_item_selected');
                 $scope.fields = $scope.fields.slice(0,7);
                 $scope.data.sample_item_id = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item].SampleItem_Id;
                 var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
@@ -454,7 +454,7 @@ app.controller('edit_procurement',
 
                 }
 
-                console.log($scope.fields);
+                //console.log($scope.fields);
             }
 }]);
 
@@ -522,7 +522,7 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
 
             //for save
             $scope.save = function(data) {
-                console.log(data);
+                //console.log(data);
                 // if($scope.data.client == '' || $scope.data.SamplingDate == '' || $scope.data.FarmerName == '' || $scope.data.Commodity == ''){
                 //         seven.alert('Please enter all the values!');
                 //         return false;
@@ -532,7 +532,10 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                     var lastInsertId = res.result.insertId;
 
                         var tests =  sample_cats[data.sample_category].ProductCategory[data.product_category].Sample[data.sample].SampleItem[data.sample_item].ItemTests;
-                        console.log(tests);
+
+                        for(var l =0;l<tests.length;l++) {
+                            tests[l].added = false;
+                        }
 
 
 
@@ -548,7 +551,7 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
 
             $scope.sample_category_selected = function() {
 
-                console.log('sample_category_selected');
+                //console.log('sample_category_selected');
                 $scope.fields = $scope.fields.slice(0,4);
                 
                 $scope.data.product_category = null;
@@ -567,11 +570,11 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
 
                 $scope.fields.push(ProductCategoryField);
                     
-                console.log($scope.data);
+                //console.log($scope.data);
             }
 
             $scope.sample_product_selected = function() {
-                console.log('sample_product_selected');
+                //console.log('sample_product_selected');
                 $scope.data.sample = null;
                 $scope.data.sample_item = null;
                 $scope.fields = $scope.fields.slice(0,5);
@@ -584,11 +587,11 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                      options: sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample
                  }
                  $scope.fields.push(sampleField);
-                console.log($scope.data);
+                //console.log($scope.data);
             }
 
             $scope.sample_selected = function() {
-                console.log('sample_selected');
+                //console.log('sample_selected');
                 $scope.data.sample_item = null;
                 $scope.fields = $scope.fields.slice(0,6);
                 $scope.data.sample_id =  sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].Sample_ID;
@@ -603,12 +606,11 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
 
 
 
-                console.log($scope.data);
+                //console.log($scope.data);
             }
 
-
             $scope.sample_item_selected = function() {
-                console.log('sample_item_selected');
+                //console.log('sample_item_selected');
                 $scope.fields = $scope.fields.slice(0,7);
                 $scope.data.sample_item_id = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item].SampleItem_Id;
                 var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
@@ -628,11 +630,8 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
 
                 }
 
-                console.log($scope.fields);
+                //console.log($scope.fields);
             }
-
-
-            
 }]);
 
 

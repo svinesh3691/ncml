@@ -27,17 +27,17 @@ app.service("fns", ['$http','C', function( $http , C ) {
 			// });
 			var procurement_main 	= 'CREATE TABLE IF NOT EXISTS Procurement (ProcurementId INTEGER PRIMARY KEY AUTOINCREMENT, JsonContent TEXT, ServerId int)';
 			this.query(procurement_main,[],function(res){
-				console.log(res);
+				// console.log(res);
 			});
 
 			var procurement_imgs 	= 'CREATE TABLE IF NOT EXISTS Procurement_Images (ProcureImgId INTEGER PRIMARY KEY AUTOINCREMENT, ProcureId int, ImageUrl TEXT, ServerId int)';
 			this.query(procurement_imgs,[],function(res){
-				console.log(res);
+				// console.log(res);
 			});
 
-			var query1 	= 'CREATE TABLE IF NOT EXISTS Test (TestId INTEGER PRIMARY KEY AUTOINCREMENT, ProcurementId INTEGER, Damaged TEXT, DisColoured TEXT, ChalkyGrain TEXT, RedGrains TEXT, AdMixtures TEXT, DeHusked TEXT, Moisture TEXT)';
+			var query1 	= 'CREATE TABLE IF NOT EXISTS Test (TestId INTEGER PRIMARY KEY AUTOINCREMENT, ProcurementId INTEGER, Damaged TEXT)';
 			this.query(query1,[],function(res){
-				console.log(res);
+				// console.log(res);
 			});
 	}
 	//Querying the db

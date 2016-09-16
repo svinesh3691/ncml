@@ -2,12 +2,14 @@
 .navbar-fixed .page-content {
     padding-top: 23px;
 }
-
+.floating-labels {
+  font-size: 13.5px !important;
+}
 </style>
 <div data-page="form-elements" class="page">
   <div class="navbar">
     <div class="navbar-inner">
-      <div class="left"><a href="#/app/home" class="back link icon-only"><i class="icon icon-back"></i></a></div>
+      <div class="left"><a href="#/app/home" class="back link icon-only no-ripple"><i class="icon icon-back"></i></a></div>
       <div class="center">Add Procurement</div>
       <!-- <div class="right"><a  class="link open-panel icon-only"><i class="icon icon-bars"></i></a></div> -->
     </div>
@@ -23,7 +25,7 @@
                       <div ng-if="field.type=='text'" class="item-content">
                         <div class="item-media"><i class="icon {{field.icon}}"></i></div>
                         <div class="item-inner  not-empty-state"> 
-                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-title floating-labels">{{field.title}}</div>
                           <div class="item-input">
                             <input type="{{field.real_type}}" ng-model="data[field.model]" placeholder=""/>
                           </div>
@@ -34,7 +36,7 @@
                       <div  ng-if="field.type=='select'" class="item-content">
                         <div class="item-media"><i class="icon {{field.icon}}"></i></div>
                         <div class="item-inner  not-empty-state"> 
-                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-title floating-labels">{{field.title}}</div>
                           <div class="item-input">
                             ng-options="option.value as option.caption for option in config.options"
                             <select  ng-model="data[field.model]" ng-options="option.value as option.title for option in field.options">
@@ -47,7 +49,7 @@
                       <div  ng-if="field.type=='select_agency'" class="item-content">
                         <div class="item-media"><i class="icon {{field.icon}}"></i></div>
                         <div class="item-inner"> 
-                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-title floating-labels">{{field.title}}</div>
                           <div class="item-input">
                             <select  ng-model="data[field.model]" ng-options="option.Customer_ID as option.Customer_Name for option in field.options">
                             </select>
@@ -61,7 +63,7 @@
                       <div  ng-if="field.type=='select_sample_category'" class="item-content">
                         <div class="item-media"><i class="icon {{field.icon}}"></i></div>
                         <div class="item-inner"> 
-                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-title floating-labels">{{field.title}}</div>
                           <div class="item-input">
                             <select ng-change="sample_category_selected()" ng-model="data[field.model]" >
                                 <option ng-repeat="option in field.options" ng-value="$index">{{option.SampleCategory_Name}}</option>
@@ -75,7 +77,7 @@
                       <div  ng-if="field.type=='select_product_category'" class="item-content">
                         <div class="item-media"><i class="icon {{field.icon}}"></i></div>
                         <div class="item-inner"> 
-                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-title floating-labels">{{field.title}}</div>
                           <div class="item-input">
                             <select ng-change="sample_product_selected()" ng-model="data[field.model]" >
                                 <option ng-repeat="option in field.options" ng-value="$index">{{option.ProductCategory_Name}}</option>
@@ -90,7 +92,7 @@
                       <div  ng-if="field.type=='select_sample'" class="item-content">
                         <div class="item-media"><i class="icon {{field.icon}}"></i></div>
                         <div class="item-inner"> 
-                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-title floating-labels">{{field.title}}</div>
                           <div class="item-input">
                             <select ng-change="sample_selected()" ng-model="data[field.model]" >
                                 <option ng-repeat="option in field.options" ng-value="$index">{{option.Sample_Name}}</option>
@@ -104,7 +106,7 @@
                       <div  ng-if="field.type=='select_sample_item'" class="item-content">
                         <div class="item-media"><i class="icon {{field.icon}}"></i></div>
                         <div class="item-inner"> 
-                          <div class="item-title floating-label">{{field.title}}</div>
+                          <div class="item-title floating-labels">{{field.title}}</div>
                           <div class="item-input">
                             <select ng-change="sample_item_selected()" ng-model="data[field.model]" >
                                 <option ng-repeat="option in field.options" ng-value="$index">{{option.SampleItem_Name}}</option>
