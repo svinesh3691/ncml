@@ -6,11 +6,13 @@ var app = angular.module('app', [
 ]);
 
 
+
 /* Core Phone gap [JS] Codes */ 
 function onLoad() {
     document.addEventListener("deviceready", onDeviceReady, false);
-    // alert('Loaded !');
 }
+
+
 
 // onDeviceReady
 function onDeviceReady() {

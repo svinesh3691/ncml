@@ -38,6 +38,7 @@ app.controller('detail_procurement',
             $scope.images = [];
             $scope.id = $stateParams.Id;
             $scope.sample_cats = sample_cats;
+            $scope.agencies = agencies;
 
             var list_images = function () {
 
@@ -468,21 +469,17 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                 window.location.href = '#/app/home'; 
                 return;
             } else {
-              var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
-              var agencies    = JSON.parse(localStorage.ncml_data_registeration);
+                var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
+                var agencies    = JSON.parse(localStorage.ncml_data_registeration);
+                $scope.agencies    = agencies;
             }
 
 
             //Initializing datas
             $scope.data = {};
-            $scope.data.client = '';
-            $scope.data.SamplingDate = '';
-            $scope.data.FarmerName = ''; 
-            $scope.data.Commodity = '';
-            $scope.data.sample_category = '';
+            $scope.data.SamplingDate = new Date();
             
-
-
+            
             //Setting up the fields
             $scope.fields = [
                              {
@@ -520,16 +517,17 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
 
             // The Functions......
 
-            //for save
+            //For Save
             $scope.save = function(data) {
-                //console.log(data);
-                // if($scope.data.client == '' || $scope.data.SamplingDate == '' || $scope.data.FarmerName == '' || $scope.data.Commodity == ''){
-                //         seven.alert('Please enter all the values!');
-                //         return false;
-                // }
+                console.log($scope.data);
+                if(!$scope.data.client || !$scope.data.SamplingDate || !$scope.data.FarmerName || !$scope.data.sample_category ||  !$scope.data.product_category ||  !$scope.data.sample ||  !$scope.data.sample_item){
+                        seven.alert('Please enter all the values!');
+                        return false;
+                }
                 seven.showPreloader('Saving..');
                 fns.query('INSERT into Procurement (JsonContent,ServerId) VALUES (?,?)',[JSON.stringify(data),0],function(res){
-                    var lastInsertId = res.result.insertId;
+                        
+                        lastInsertId = res.result.insertId;
 
                         var tests =  sample_cats[data.sample_category].ProductCategory[data.product_category].Sample[data.sample].SampleItem[data.sample_item].ItemTests;
 
@@ -537,21 +535,19 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                             tests[l].added = false;
                         }
 
-
-
-                    fns.query('INSERT into Test (ProcurementId,Damaged) VALUES (?,?)',[lastInsertId,JSON.stringify(tests)],function(res){
-                            seven.hidePreloader();
-                            seven.alert('Saved Successfully','Alert',function(){
-                                window.location = '#/app/list_procurement/all'
-                            })
-                                                        
-                    });
+                        fns.query('INSERT into Test (ProcurementId,TestsJson) VALUES (?,?)',[lastInsertId,JSON.stringify(tests)],function(res){
+                                seven.hidePreloader();
+                                localStorage.ncml_now_add_id = lastInsertId;
+                                localStorage.ncml_now_add_pr = lastInsertId;
+                                seven.alert('Saved Successfully','Alert',function(){
+                                    window.location.href = '#/app/tests_add/'+lastInsertId;
+                                })
+                        });
                 });
             }
 
             $scope.sample_category_selected = function() {
 
-                //console.log('sample_category_selected');
                 $scope.fields = $scope.fields.slice(0,4);
                 
                 $scope.data.product_category = null;
@@ -569,12 +565,9 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                 }
 
                 $scope.fields.push(ProductCategoryField);
-                    
-                //console.log($scope.data);
             }
 
             $scope.sample_product_selected = function() {
-                //console.log('sample_product_selected');
                 $scope.data.sample = null;
                 $scope.data.sample_item = null;
                 $scope.fields = $scope.fields.slice(0,5);
@@ -587,11 +580,9 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                      options: sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample
                  }
                  $scope.fields.push(sampleField);
-                //console.log($scope.data);
             }
 
             $scope.sample_selected = function() {
-                //console.log('sample_selected');
                 $scope.data.sample_item = null;
                 $scope.fields = $scope.fields.slice(0,6);
                 $scope.data.sample_id =  sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].Sample_ID;
@@ -610,7 +601,6 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
             }
 
             $scope.sample_item_selected = function() {
-                //console.log('sample_item_selected');
                 $scope.fields = $scope.fields.slice(0,7);
                 $scope.data.sample_item_id = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item].SampleItem_Id;
                 var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
@@ -629,9 +619,27 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                     $scope.fields.push(sampleItemField);
 
                 }
-
-                //console.log($scope.fields);
             }
+
+
+            /* For client filter */
+            $scope.closeAgencySelect = function(){
+                $('.agency-search-select').hide();
+                $('.form-div').show();
+            }
+            $(document).on('click','.agency-select-box',function(){
+                $('.agency-search-select').show();
+                $('.form-div').hide();
+            });
+            $(document).on('click','.ag',function(){
+                var cid = $(this).data('cid');;
+                $scope.data.client = cid;
+                $scope.agencyName = cid.Customer_Name;
+                $scope.searchTextClient ='';
+                $scope.$apply();
+                $scope.closeAgencySelect();
+            });
+            
 }]);
 
 

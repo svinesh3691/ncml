@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+   <head>
+    
+     
+        <link rel="stylesheet" href="assets/7/css/framework7.material.css">
+        <link rel="stylesheet" href="assets/7/css/framework7.material.colors.css">
+
+   </head>
+   <body>
+      <div class="views">
+         <div class="view view-main">
+            
+            <div class="pages navbar-through">
+               <div data-page="home" class="page">
+                  <div class="page-content">
+                     <div class="list-block">
+                        <ul>
+                           <li>
+                              <a href="#" data-searchbar="true" data-searchbar-placeholder="Search Countries" class="item-link smart-select">
+                                 <select name="countries">
+                                    <option value="India" selected>India</option>
+                                    <option value="Newz=Zealnad">New Zealand</option>
+                                    <option value="Srilanka">Srilanka</option>
+                                    <option value="WestIndies">West Indies</option>
+                                    <option value="China">China</option>
+                                 </select>
+                                 <div class="item-content">
+                                    <div class="item-inner">
+                                       <div class="item-title">Countries</div>
+                                    </div>
+                                 </div>
+                              </a>
+                           </li>
+                           
+                           
+                        </ul>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+     
+        <script type="text/javascript" src="assets/7/js/framework7.js"></script>
+
+      <script>
+         // here initialize the app
+          var myApp = new Framework7({
+               animateNavBackIcon:true
+          });
+
+     
+
+         // Add the view
+         var mainView = myApp.addView('.view-main', {
+            // enable the dynamic navbar for this view
+            dynamicNavbar: true
+         });
+      </script>
+   </body>
+</html>

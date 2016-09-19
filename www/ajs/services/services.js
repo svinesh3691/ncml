@@ -35,8 +35,8 @@ app.service("fns", ['$http','C', function( $http , C ) {
 				// console.log(res);
 			});
 
-			var query1 	= 'CREATE TABLE IF NOT EXISTS Test (TestId INTEGER PRIMARY KEY AUTOINCREMENT, ProcurementId INTEGER, Damaged TEXT)';
-			this.query(query1,[],function(res){
+			var procurement_test 	= 'CREATE TABLE IF NOT EXISTS Test (TestId INTEGER PRIMARY KEY AUTOINCREMENT, ProcurementId INTEGER, TestsJson TEXT)';
+			this.query(procurement_test,[],function(res){
 				// console.log(res);
 			});
 	}
