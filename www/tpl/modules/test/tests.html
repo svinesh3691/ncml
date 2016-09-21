@@ -2,6 +2,9 @@
 .badge {
     font-size: 18px;
   }
+  .test_name{
+    font-size: 15px;
+  }
 </style>
 <div data-page="form-elements" class="page">
   <div class="navbar">
@@ -16,12 +19,14 @@
     <div class="x-list-block">
       <ul>
           <li ng-if="test.added" ng-repeat="test in tests">
-            <div class="x-item-full"> {{test.TestName}} </div>
+            <div class="x-item-full"> {{test.TestName}} <br>
+              <span class="test_name">{{test.TestMethod[test.tesmet-1].Method_Name}}</span>
+            </div>
             <div class="x-test-result">
               <div class="x-item-half"> 
                 <div class="item-title x-test-label">Spec</div>
                 <div class="item-input item-input-field">
-                  <input type="text" placeholder="Spec"  readonly value="0.00% t0 3.30%">
+                  <input type="text" placeholder="Spec"  readonly value="{{test.TestMethod[test.tesmet-1].Method_Limit}}">
                 </div>
               </div>
               <div class="x-item-half"> 

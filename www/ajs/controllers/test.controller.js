@@ -8,7 +8,9 @@ app.controller('tests', ['$scope','fns','seven','$stateParams', '$rootScope',
         fns.query('SELECT * FROM Test WHERE ProcurementId = ?',[$scope.id],function(res){
             // console.log(res.result.rows.length);
                 // console.log(JSON.parse(res.result.rows.item(0).TestsJson));
+
                 $scope.tests = JSON.parse(res.result.rows.item(0).TestsJson);
+                console.log($scope.tests);
                 $scope.$apply();
                 
         });

@@ -6,9 +6,14 @@
 .fnt_siz_sm {
   font-size: 13.5px !important;
 }
+
+.agency-search-select {
+   display: none;
+}
+
 </style>
 <div data-page="form-elements" class="page">
-  <div class="navbar">
+  <div class="navbar form-div">
     <div class="navbar-inner">
       <div class="left">
         <a ng-if="root_edit_id" href="#/app/detail_procurement/{{root_edit_id}}" class="back link icon-only no-ripple"><i class="icon icon-back"></i></a>
@@ -18,7 +23,7 @@
       <!-- <div class="right"><a  class="link open-panel icon-only"><i class="icon icon-bars"></i></a></div> -->
     </div>
   </div>
-  <div class="page-content">
+  <div class="page-content form-div">
     <!-- <div class="content-block-title">Dynamic Form</div> -->
         <form ng-submit="save(data)">
         <div class="list-block inputs-list">
@@ -49,7 +54,7 @@
                       </div>
 
                       <!-- For agency boxes -->
-                      <div  ng-if="field.type=='select_agency'" class="item-content">
+                     <!--  <div  ng-if="field.type=='select_agency'" class="item-content">
                         <div class="item-media"><i class="icon {{field.icon}}"></i></div>
                         <div class="item-inner"> 
                           <div class="item-title fnt_siz_sm">{{field.title}}</div>
@@ -58,7 +63,20 @@
                             </select>
                           </div>
                         </div>
-                      </div>
+                      </div> -->
+
+
+                      <div  ng-if="field.type=='select_agency'" class="item-content">
+                     <div class="item-media"><i class="icon {{field.icon}}"></i></div>
+                     <div class="item-inner"> 
+                        <div class="item-title floating-labels">{{field.title}}</div>
+                        <div  class="item-input agency-select-box">
+                           <input type="text" readonly="true" ng-model="agencyName" >
+                        </div>
+                     </div>
+                  </div>
+
+
 
 
 
@@ -129,10 +147,38 @@
         </div>
         <div class="content-block">
               <p class="buttons-row">
-                <button type="submit" class="button button-fill button-raised color-teal"> Save </button>
-                <button type="reset"  class="button button-raised x_color-white no-ripple"> Reset </button>
+                <button type="submit" class="button button-fill button-raised color-teal"> update </button>
+                <button type="button" ng-click="back();"  class="button button-raised x_color-white no-ripple"> Cancel </button>
               </p>
         </div>
     </form>
   </div>
+
+
+
+
+     <!-- Agency search select  header -->
+     <div class="navbar agency-search-select">
+        <div class="navbar-inner">
+           <div class="left"><a ng-click="closeAgencySelect()" class="back link icon-only no-ripple"><i class="icon icon-back"></i></a></div>
+           <div class="center">Select Agency/Client</div>
+           <!-- <div class="right"><a  class="link open-panel icon-only"><i class="icon icon-bars"></i></a></div> -->
+        </div>
+     </div>
+
+     <!-- Agency search select body -->
+     <div class="page-content agency-search-select">
+        <div class="list-block">      
+              <div class="item-content"> 
+                   <div style=" width: 94%;" class="item-input item-input-field">
+                     <input type="text" placeholder="Search here..." ng-model="searchTextClient" class="">
+                   </div>
+              </div>
+              <ul>
+                 <li style="padding-left:3%" class="item-inner ag" data-cid="{{agen}}" ng-repeat="agen in agencies | filter:searchTextClient">
+                       {{agen.Customer_Name}}
+                 </li>
+              </ul>      
+        </div>
+     </div>
 </div>

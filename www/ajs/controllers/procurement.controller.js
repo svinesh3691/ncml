@@ -58,13 +58,9 @@ app.controller('detail_procurement',
                 JsonContent = JSON.parse(res.result.rows.item(i).JsonContent);
                 JsonContent.ProcurementId = res.result.rows.item(i).ProcurementId;
                 $scope.data = JsonContent;
-                //console.log($scope.data);
-                //console.log('$scope.data.sample_category');
-                //console.log($scope.data.sample_category);
 
                 $scope.fields = [];
                 var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
-                //console.log(thisSampleItem.ItemDetails);
                 for(var i = 0;i < thisSampleItem.ItemDetails.length; i++) {
 
                     var sampleItemField = {
@@ -80,11 +76,18 @@ app.controller('detail_procurement',
 
                 }
 
+                fns.query('SELECT * FROM Test WHERE ProcurementId = ?',[$scope.id],function(res){
 
+                        var tests = JSON.parse(res.result.rows.item(0).TestsJson);
+                        console.log($scope.tests);
+                        $scope.tests_count = tests.reduce(function(n,t){
+                            return n + t.added;
+                        },0)
+                        $scope.$apply();
+                        list_images();
+                        seven.hidePreloader();
+                });
 
-                $scope.$apply();
-                list_images();
-                seven.hidePreloader();
             });
 
             $rootScope.root_edit_id =  $scope.id;
@@ -129,11 +132,7 @@ app.controller('detail_procurement',
                         var lastInsertId = res.result.insertId;
                         list_images();
                     });
-                    // movePic(imageURI);
-
-                    // onImageSuccess(imageURI);
-
-
+             
 
                 }
 
@@ -263,6 +262,7 @@ app.controller('edit_procurement',
             } else {
               var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
               var agencies    = JSON.parse(localStorage.ncml_data_registeration);
+              $scope.agencies    = agencies;
             }
 
             seven.showPreloader();
@@ -272,9 +272,9 @@ app.controller('edit_procurement',
                 JsonContent = JSON.parse(res.result.rows.item(i).JsonContent);
                 JsonContent.ProcurementId = res.result.rows.item(i).ProcurementId;
                 $scope.data = JsonContent;
-                // //console.log($scope.data);
                 $scope.data.SamplingDate = new Date($scope.data.SamplingDate);
-                //console.log($scope.data);
+
+                 $scope.agencyName = $scope.data.client.Customer_Name;
 
 
                 $scope.fields = [
@@ -355,13 +355,16 @@ app.controller('edit_procurement',
                 $scope.$apply();
                 seven.hidePreloader();
             });
-
+    
+            $scope.back = function(){
+                    window.location = '#/app/detail_procurement/'+$scope.id;
+            }
             $scope.save = function(data){
                 seven.showPreloader('Updating..');
                 fns.query('UPDATE Procurement SET JsonContent = ?, ServerId = ?  WHERE ProcurementId = ?',[JSON.stringify(data),0,$scope.id],function(res){
                     seven.hidePreloader();
                     seven.alert('Updated Successfully','Alert',function(){
-                                window.location = '#/app/list_procurement/all'
+                                window.location = '#/app/detail_procurement/'+$scope.id;
                     });
                 });
             }
@@ -457,6 +460,27 @@ app.controller('edit_procurement',
 
                 //console.log($scope.fields);
             }
+
+
+
+            /* For client filter */
+            $scope.closeAgencySelect = function(){
+                $('.agency-search-select').hide();
+                $('.form-div').show();
+            }
+            $(document).on('click','.agency-select-box',function(){
+                $('.agency-search-select').show();
+                $('.form-div').hide();
+            });
+            $(document).on('click','.ag',function(){
+                var cid = $(this).data('cid');;
+                $scope.data.client = cid;
+                $scope.agencyName = cid.Customer_Name;
+                $scope.searchTextClient ='';
+                $scope.$apply();
+                $scope.closeAgencySelect();
+            });
+
 }]);
 
 
@@ -519,11 +543,19 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
 
             //For Save
             $scope.save = function(data) {
-                console.log($scope.data);
+
+
+
                 if(!$scope.data.client || !$scope.data.SamplingDate || !$scope.data.FarmerName || !$scope.data.sample_category ||  !$scope.data.product_category ||  !$scope.data.sample ||  !$scope.data.sample_item){
                         seven.alert('Please enter all the values!');
                         return false;
                 }
+                if(!(new Date($scope.data.SamplingDate)<= new Date()))  {
+                        seven.alert('The date must be equal/less than today');
+                        return false;
+                }
+
+
                 seven.showPreloader('Saving..');
                 fns.query('INSERT into Procurement (JsonContent,ServerId) VALUES (?,?)',[JSON.stringify(data),0],function(res){
                         
