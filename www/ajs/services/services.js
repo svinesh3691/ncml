@@ -25,17 +25,17 @@ app.service("fns", ['$http','C', function( $http , C ) {
 			// 	   			tx.executeSql( 'DROP TABLE Test');
 			// 	   			console.log('Drop');
 			// });
-			var procurement_main 	= 'CREATE TABLE IF NOT EXISTS Procurement (ProcurementId INTEGER PRIMARY KEY AUTOINCREMENT, JsonContent TEXT, ServerId int)';
+			var procurement_main 	= 'CREATE TABLE IF NOT EXISTS Procurement (ProcurementId INTEGER PRIMARY KEY AUTOINCREMENT, JsonContent TEXT, Status int, ServerId int)';
 			this.query(procurement_main,[],function(res){
 				// console.log(res);
 			});
 
-			var procurement_imgs 	= 'CREATE TABLE IF NOT EXISTS Procurement_Images (ProcureImgId INTEGER PRIMARY KEY AUTOINCREMENT, ProcureId int, ImageUrl TEXT, ServerId int)';
+			var procurement_imgs 	= 'CREATE TABLE IF NOT EXISTS Procurement_Images (ProcureImgId INTEGER PRIMARY KEY AUTOINCREMENT, ProcureId int, ImageUrl TEXT, Status int, ServerId int)';
 			this.query(procurement_imgs,[],function(res){
 				// console.log(res);
 			});
 
-			var procurement_test 	= 'CREATE TABLE IF NOT EXISTS Test (TestId INTEGER PRIMARY KEY AUTOINCREMENT, ProcurementId INTEGER, TestsJson TEXT)';
+			var procurement_test 	= 'CREATE TABLE IF NOT EXISTS Test (TestId INTEGER PRIMARY KEY AUTOINCREMENT, ProcurementId INTEGER, TestsJson TEXT, Status int, ServerId int)';
 			this.query(procurement_test,[],function(res){
 				// console.log(res);
 			});

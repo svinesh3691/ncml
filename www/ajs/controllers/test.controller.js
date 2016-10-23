@@ -2,18 +2,35 @@
 app.controller('tests', ['$scope','fns','seven','$stateParams', '$rootScope',
     function ( $scope , fns , seven , $stateParams , $rootScope) {
         $scope.id = $stateParams.Id; 
-        
+        var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
 
 
-        fns.query('SELECT * FROM Test WHERE ProcurementId = ?',[$scope.id],function(res){
-            // console.log(res.result.rows.length);
-                // console.log(JSON.parse(res.result.rows.item(0).TestsJson));
+        fns.query('SELECT * FROM Procurement WHERE ProcurementId = ?',[$scope.id],function(res){
+                var i = 0;
+                JsonContent = JSON.parse(res.result.rows.item(i).JsonContent);
+                JsonContent.ProcurementId = res.result.rows.item(i).ProcurementId;
+                procurement_data = JsonContent;
 
-                $scope.tests = JSON.parse(res.result.rows.item(0).TestsJson);
-                console.log($scope.tests);
-                $scope.$apply();
+                $scope.tests =  sample_cats[procurement_data.sample_category].ProductCategory[procurement_data.product_category].Sample[procurement_data.sample].SampleItem[procurement_data.sample_item].ItemTests;
+                
+             
+                for(i in $scope.tests) {
+                     $scope.tests[i].TestMethod[0] = {'Method_Name':'--Select test method--','Method_ID':''};
+                }
+                fns.query('SELECT * FROM Test WHERE ProcurementId = ?',[$scope.id],function(res){
+                        $scope.tests_data = JSON.parse(res.result.rows.item(0).TestsJson);
+                        $scope.$apply();
+                        seven.hidePreloader();
+                        console.log($scope.tests);
+
+                        console.log($scope.tests_data);
+
+                });
+           
                 
         });
+
+
 
       
          $rootScope.addTests = function(){
@@ -22,9 +39,9 @@ app.controller('tests', ['$scope','fns','seven','$stateParams', '$rootScope',
          }
 
          $rootScope.testUpdate = function(){
-                console.log($scope.tests);
+                console.log($scope.tests_data);
                 seven.showPreloader('Updating..');
-                fns.query('UPDATE Test SET TestsJson = ?  WHERE ProcurementId = ?',[JSON.stringify($scope.tests), $scope.id],function(res){
+                fns.query('UPDATE Test SET TestsJson = ? , Status = ? WHERE ProcurementId = ?',[JSON.stringify($scope.tests_data), 2, $scope.id],function(res){
                     seven.hidePreloader();
                     seven.alert('Saved Successfully')
                     // window.location.href = '#/app/tests/'+$scope.id;
@@ -46,39 +63,44 @@ app.controller('tests_add', ['$scope','fns','seven','$stateParams', '$rootScope'
            $scope.newP = false;
         }
 
+        var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
 
         $scope.tests = [];
+        $scope.tester = {};
 
-        fns.query('SELECT * FROM Test WHERE ProcurementId = ?',[$scope.id],function(res){
-                $scope.tests = JSON.parse(res.result.rows.item(0).TestsJson);
+
+
+            fns.query('SELECT * FROM Procurement WHERE ProcurementId = ?',[$scope.id],function(res){
+                var i = 0;
+                JsonContent = JSON.parse(res.result.rows.item(i).JsonContent);
+                JsonContent.ProcurementId = res.result.rows.item(i).ProcurementId;
+                procurement_data = JsonContent;
+
+                $scope.tests =  sample_cats[procurement_data.sample_category].ProductCategory[procurement_data.product_category].Sample[procurement_data.sample].SampleItem[procurement_data.sample_item].ItemTests;
+                
+             
+                for(i in $scope.tests) {
+                     $scope.tests[i].TestMethod[0] = {'Method_Name':'--Select test method--','Method_ID':''};
+                }
                 console.log($scope.tests);
-                $scope.tests.map(function(ob){
-                    ob.TestMethod.unshift({'Method_Name':'--Select test method--','Method_ID':''});
-                    console.log(ob.TestMethod);
-                })
-                $scope.$apply();
-                seven.hidePreloader();
-        });
+                fns.query('SELECT * FROM Test WHERE ProcurementId = ?',[$scope.id],function(res){
+                        $scope.tests_data = JSON.parse(res.result.rows.item(0).TestsJson);
+                        $scope.$apply();
+                        seven.hidePreloader();
+                });
+           
+                
+            });
+        
 
 
 
         $rootScope.test_add_Update = function() {
+                console.log($scope.tests_data);
                 seven.showPreloader('Updating..');
                 localStorage.ncml_now_add_pr = 0;
 
-
-                $scope.tests.map(function(ob){
-                    console.log(ob)
-                    if (!ob.added) {
-                        ob.test_val = '';
-                        ob.tesmet = '';
-                    }
-                    ob.TestMethod.shift();
-                })
-
-
-
-                fns.query('UPDATE Test SET TestsJson = ?  WHERE ProcurementId = ?',[JSON.stringify($scope.tests), $scope.id],function(res){
+                fns.query('UPDATE Test SET TestsJson = ?, Status = ?  WHERE ProcurementId = ?',[JSON.stringify($scope.tests_data), 2, $scope.id],function(res){
                     seven.hidePreloader();
                     seven.alert('Updated Successfully');
                     if ($scope.newP) {

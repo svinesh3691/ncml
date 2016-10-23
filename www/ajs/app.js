@@ -9,7 +9,9 @@ var app = angular.module('app', [
 
 /* Core Phone gap [JS] Codes */ 
 function onLoad() {
+    
     document.addEventListener("deviceready", onDeviceReady, false);
+
 }
 
 
@@ -22,5 +24,6 @@ function onDeviceReady() {
             var exit_confirm = confirm('Are you sure to exit app? ');
             if(exit_confirm) navigator.app.exitApp();
         }, false );
+
 
 }

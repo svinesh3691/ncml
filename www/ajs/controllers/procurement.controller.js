@@ -17,7 +17,6 @@ app.controller('list_procurement', ['$scope','fns','seven',
         });
 }]);
 
-
 app.controller('detail_procurement',
     ['$scope','fns','seven','$stateParams','$rootScope', '$state',
         function ($scope,fns,seven,$stateParams,$rootScope, $state) {
@@ -58,14 +57,16 @@ app.controller('detail_procurement',
                 JsonContent = JSON.parse(res.result.rows.item(i).JsonContent);
                 JsonContent.ProcurementId = res.result.rows.item(i).ProcurementId;
                 $scope.data = JsonContent;
+                console.log('$scope.data')
+                console.log(JSON.stringify($scope.data))
 
                 $scope.fields = [];
                 var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
-                for(var i = 0;i < thisSampleItem.ItemDetails.length; i++) {
 
+                for( var itemDet in thisSampleItem.ItemDetails) {
                     var sampleItemField = {
-                         title: thisSampleItem.ItemDetails[i].ItemDetails_Name,
-                         model: 'extra_fields'+i,
+                         title: thisSampleItem.ItemDetails[itemDet].ItemDetails_Name,
+                         model: 'extra_fields'+thisSampleItem.ItemDetails[itemDet].ItemDetails_ID,
                          type: 'text',
                          real_type: 'text',
                          id     : 'sample_item',
@@ -76,18 +77,28 @@ app.controller('detail_procurement',
 
                 }
 
+
+
+
+
+
+
+
+
                 fns.query('SELECT * FROM Test WHERE ProcurementId = ?',[$scope.id],function(res){
 
                         var tests = JSON.parse(res.result.rows.item(0).TestsJson);
-                        console.log($scope.tests);
-                        $scope.tests_count = tests.reduce(function(n,t){
-                            return n + t.added;
-                        },0)
+                        console.log(tests);
+                        var tests_count = 0;
+                        for (var k in tests) {
+                            if(tests[k].added) tests_count++;
+                        }
+                   
+                        $scope.tests_count = tests_count;
                         $scope.$apply();
                         list_images();
                         seven.hidePreloader();
                 });
-
             });
 
             $rootScope.root_edit_id =  $scope.id;
@@ -124,6 +135,7 @@ app.controller('detail_procurement',
             
 
             $scope.camera = function () {
+              
                 navigator.camera.getPicture(onSuccess, onFail, { quality: 16, 
                     destinationType: Camera.DestinationType.FILE_URI });
 
@@ -132,8 +144,6 @@ app.controller('detail_procurement',
                         var lastInsertId = res.result.insertId;
                         list_images();
                     });
-             
-
                 }
 
                 function onFail(message) {
@@ -141,7 +151,6 @@ app.controller('detail_procurement',
                 }
             }
 
-            // LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
 
 
 
@@ -248,11 +257,10 @@ app.controller('detail_procurement',
             /*QQQQQQQQQQQQQQQQQQQQQQqqqqq*/
 }]);
 
-
 app.controller('edit_procurement',
     ['$scope','fns','seven','$state','$stateParams',
         function ( $scope , fns , seven , $state, $stateParams) {
-          // //console.log('Edit Procurement'); 
+            //console.log('Edit Procurement'); 
 
             //Tou must do raw data sync for this to work
             if(!localStorage.ncml_raw_data_lab || !localStorage.ncml_data_registeration) {
@@ -335,11 +343,26 @@ app.controller('edit_procurement',
 
                 var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
 
-                for(var i = 0;i < thisSampleItem.ItemDetails.length; i++) {
+                // for(var i = 0;i < thisSampleItem.ItemDetails.length; i++) {
 
+                //     var sampleItemField = {
+                //          title: thisSampleItem.ItemDetails[i].ItemDetails_Name,
+                //          model: 'extra_fields'+i,
+                //          type: 'text',
+                //          real_type: 'text',
+                //          id     : 'sample_item',
+                //          icon: 'icon-form-url',
+
+                //      }
+                //     $scope.fields.push(sampleItemField);
+
+                // }
+
+                 for( var itemDet in thisSampleItem.ItemDetails) {
+                    console.log(itemDet);
                     var sampleItemField = {
-                         title: thisSampleItem.ItemDetails[i].ItemDetails_Name,
-                         model: 'extra_fields'+i,
+                         title: thisSampleItem.ItemDetails[itemDet].ItemDetails_Name,
+                         model: 'extra_fields'+thisSampleItem.ItemDetails[itemDet].ItemDetails_ID,
                          type: 'text',
                          real_type: 'text',
                          id     : 'sample_item',
@@ -349,6 +372,7 @@ app.controller('edit_procurement',
                     $scope.fields.push(sampleItemField);
 
                 }
+
                 
 
 
@@ -359,9 +383,9 @@ app.controller('edit_procurement',
             $scope.back = function(){
                     window.location = '#/app/detail_procurement/'+$scope.id;
             }
-            $scope.save = function(data){
+            $scope.save = function(data) {
                 seven.showPreloader('Updating..');
-                fns.query('UPDATE Procurement SET JsonContent = ?, ServerId = ?  WHERE ProcurementId = ?',[JSON.stringify(data),0,$scope.id],function(res){
+                fns.query('UPDATE Procurement SET JsonContent = ?,  Status = ? WHERE ProcurementId = ?',[JSON.stringify(data), 2, $scope.id],function(res){
                     seven.hidePreloader();
                     seven.alert('Updated Successfully','Alert',function(){
                                 window.location = '#/app/detail_procurement/'+$scope.id;
@@ -480,13 +504,14 @@ app.controller('edit_procurement',
                 $scope.$apply();
                 $scope.closeAgencySelect();
             });
-
 }]);
-
 
 app.controller('add_procurement', ['$scope','fns','seven','$state',
     function ( $scope , fns , seven , $state) {
-
+            // seven.showPreloader('Loading...');
+            setTimeout(function(){
+              seven.hidePreloader();
+            },1789)
             //You must do raw data sync for this to work
             if(!localStorage.ncml_raw_data_lab || !localStorage.ncml_data_registeration) {
                 seven.alert('Please do raw data sync to continue');
@@ -554,28 +579,57 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                         seven.alert('The date must be equal/less than today');
                         return false;
                 }
+              
+                seven.showPreloader('Getting Location..');
 
 
-                seven.showPreloader('Saving..');
-                fns.query('INSERT into Procurement (JsonContent,ServerId) VALUES (?,?)',[JSON.stringify(data),0],function(res){
-                        
-                        lastInsertId = res.result.insertId;
 
-                        var tests =  sample_cats[data.sample_category].ProductCategory[data.product_category].Sample[data.sample].SampleItem[data.sample_item].ItemTests;
+                var onSuccess = function(position) {
+                      seven.hidePreloader();
+                      // alert('Latitude: '          + position.coords.latitude          + '\n' +
+                      //       'Longitude: '         + position.coords.longitude         + '\n' +
+                      //       'Altitude: '          + position.coords.altitude          + '\n' +
+                      //       'Accuracy: '          + position.coords.accuracy          + '\n' +
+                      //       'Altitude Accuracy: ' + position.coords.altitudeAccuracy  + '\n' +
+                      //       'Heading: '           + position.coords.heading           + '\n' +
+                      //       'Speed: '             + position.coords.speed             + '\n' +
+                      //       'Timestamp: '         + position.timestamp                + '\n');
+                      seven.showPreloader('Saving Data..');
+                      data.loc = {}; 
+                      data.loc.latitude = position.coords.latitude; 
+                      data.loc.longitude = position.coords.longitude; 
+                      fns.query('INSERT into Procurement (JsonContent,Status,ServerId) VALUES (?,?,?)',[JSON.stringify(data),1,0],function(res){
+                              
+                              lastInsertId = res.result.insertId;
 
-                        for(var l =0;l<tests.length;l++) {
-                            tests[l].added = false;
-                        }
+                              var tests =  {};
 
-                        fns.query('INSERT into Test (ProcurementId,TestsJson) VALUES (?,?)',[lastInsertId,JSON.stringify(tests)],function(res){
-                                seven.hidePreloader();
-                                localStorage.ncml_now_add_id = lastInsertId;
-                                localStorage.ncml_now_add_pr = lastInsertId;
-                                seven.alert('Saved Successfully','Alert',function(){
-                                    window.location.href = '#/app/tests_add/'+lastInsertId;
-                                })
-                        });
-                });
+               
+                              fns.query('INSERT into Test (ProcurementId,TestsJson,Status,ServerId) VALUES (?,?,?,?)',[lastInsertId,JSON.stringify(tests),1,0],function(res){
+                                      seven.hidePreloader();
+                                      localStorage.ncml_now_add_id = lastInsertId;
+                                      localStorage.ncml_now_add_pr = lastInsertId;
+                                      seven.alert('Saved Successfully','Alert',function(){
+                                          window.location.href = '#/app/tests_add/'+lastInsertId;
+                                      })
+                              });
+                              
+                      });
+
+                };
+
+                function onError(error) {
+                  seven.hidePreloader();
+                  seven.alert('Error getting location, Please try again.','Alert',function(){
+
+                  })
+                  // alert('code: '    + error.code    + '\n' + // 'message: ' + error.message + '\n','Testing');
+                }
+
+                navigator.geolocation.getCurrentPosition(onSuccess,onError,{timeout: 100000, enableHighAccuracy: true});
+
+
+                
             }
 
             $scope.sample_category_selected = function() {
@@ -629,7 +683,6 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
 
 
 
-                //console.log($scope.data);
             }
 
             $scope.sample_item_selected = function() {
@@ -637,11 +690,12 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                 $scope.data.sample_item_id = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item].SampleItem_Id;
                 var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
 
-                for(var i = 0;i < thisSampleItem.ItemDetails.length; i++) {
 
+                for( var itemDet in thisSampleItem.ItemDetails) {
+                    console.log(itemDet);
                     var sampleItemField = {
-                         title: thisSampleItem.ItemDetails[i].ItemDetails_Name,
-                         model: 'extra_fields'+i,
+                         title: thisSampleItem.ItemDetails[itemDet].ItemDetails_Name,
+                         model: 'extra_fields'+thisSampleItem.ItemDetails[itemDet].ItemDetails_ID,
                          type: 'text',
                          real_type: 'text',
                          id     : 'sample_item',
@@ -660,8 +714,9 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                 $('.form-div').show();
             }
             $(document).on('click','.agency-select-box',function(){
-                $('.agency-search-select').show();
                 $('.form-div').hide();
+                $('.agency-search-select').show();
+                
             });
             $(document).on('click','.ag',function(){
                 var cid = $(this).data('cid');;
@@ -671,7 +726,6 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                 $scope.$apply();
                 $scope.closeAgencySelect();
             });
-            
 }]);
 
 

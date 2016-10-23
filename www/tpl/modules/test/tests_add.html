@@ -32,7 +32,7 @@
       <ul>
         <li ng-repeat="test in tests" class="no-ripple">
           <div class="label-checkboxx item-content no-ripple">
-            <input type="checkbox" ng-model="test.added">
+            <input type="checkbox" ng-model="tests_data[test.TestID].added">
             <div class="item-media"><i class="icon icon-form-checkbox"></i></div>
             <div class="item-inner">
               <div class="item-title-row">
@@ -41,13 +41,13 @@
               <div class="item-textx">
                 <div class="item-input item-input-field">
                     <!-- <input type="text"> -->
-                    <select ng-if="!test['tesmet']" ng-init="test['tesmet'] = ''" ng-model="test['tesmet']" >
-                                <option ng-init="" ng-selected="test['tesmet'] == $index" ng-repeat="option in test.TestMethod" ng-value="$index">{{option.Method_Name}}</option>
+                    <select ng-if="!tests_data[test.TestID]['tesmet']" ng-init="tests_data[test.TestID]['tesmet'] = ''" ng-model="tests_data[test.TestID]['tesmet']" >
+                                <option ng-init="" ng-selected="tests_data[test.TestID]['tesmet'] == option.Method_ID" ng-repeat="option in test.TestMethod" ng-value="option.Method_ID">{{option.Method_Name}}</option>
                     </select>
 
 
-                    <select ng-if="test['tesmet']" ng-model="test['tesmet']" >
-                                <option ng-init="" ng-selected="test['tesmet'] == $index" ng-repeat="option in test.TestMethod" ng-value="$index">{{option.Method_Name}}</option>
+                    <select ng-if="tests_data[test.TestID]['tesmet']" ng-model="tests_data[test.TestID]['tesmet']" >
+                                <option ng-init="" ng-selected="tests_data[test.TestID]['tesmet'] == option.Method_ID" ng-repeat="option in test.TestMethod" ng-value="option.Method_ID">{{option.Method_Name}}</option>
                     </select>
                 </div>
 

@@ -92,10 +92,21 @@
               <div class="item-inner">
                 <div class="item-subtitle"> {{field.title}} </div>
                 <div class="item-title-row">
-                  <div class="item-title">{{data['extra_fields'+$index] }}</div>
+                  <div class="item-title">{{data[field.model] }}</div>
                 </div>
               </div>
             </li>
+
+
+             <li class="item-content">
+              <div class="item-inner">
+                <div class="item-subtitle"> Lat- Long </div>
+                <div class="item-title-row">
+                  <div class="item-title"> {{data.loc.latitude}} - {{data.loc.longitude}} </div>
+                </div>
+              </div>
+            </li>
+
 
 
 

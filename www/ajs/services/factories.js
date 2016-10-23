@@ -11,6 +11,7 @@ app.factory("services", ['$http', function($http) {
     // var serviceBase = 'http://localhost/OFC/factory/pro/';
     // var serviceBase = 'http://demo.vintechnosys.com/oddo_api/';
     var serviceBase = 'http://www.ncmlapi.kritilims.in/Service.asmx/';
+    // var serviceBase = 'http://192.168.43.231/';
     
     var obj = {};
     obj.master = function(func_name,post_data){

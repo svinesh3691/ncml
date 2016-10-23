@@ -18,21 +18,22 @@
     
     <div class="x-list-block">
       <ul>
-          <li ng-if="test.added" ng-repeat="test in tests">
+          <li ng-if="tests_data[test.TestID].added" ng-repeat="test in tests">
             <div class="x-item-full"> {{test.TestName}} <br>
-              <span class="test_name">{{test.TestMethod[test.tesmet-1].Method_Name}}</span>
+              <span class="test_name">{{test.TestMethod[tests_data[test.TestID].tesmet].Method_Name}}</span>
             </div>
             <div class="x-test-result">
               <div class="x-item-half"> 
                 <div class="item-title x-test-label">Spec</div>
                 <div class="item-input item-input-field">
-                  <input type="text" placeholder="Spec"  readonly value="{{test.TestMethod[test.tesmet-1].Method_Limit}}">
+                  <!-- <input type="text" placeholder="Spec"  readonly value="{{test.TestMethod[tests_data[test.TestID].tesmet].Method_Limit}}"> -->
+                  <input type="text" placeholder="Spec"  readonly value="{{test.TestMethod[tests_data[test.TestID].tesmet].Method_Limit}}">
                 </div>
               </div>
               <div class="x-item-half"> 
                 <div class="item-title x-test-label">Result</div>
                 <div class="item-input item-input-field">
-                  <input type="text" placeholder="Enter Result" ng-model="test['test_val']"> 
+                    <input type="text" placeholder="Enter Result" ng-model="tests_data[test.TestID]['test_val']"> 
                 </div>
               </div>
             </div>

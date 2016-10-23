@@ -12,6 +12,16 @@
 }
 
 </style>
+
+<div style="background-color:#fff;position:absolute;top:22px;width:100%;z-index: 99;" class="list-block agency-search-select">
+          <div class="item-content"> 
+                   <div style=" " class="item-input item-input-field">
+                     <input type="text" placeholder="Search here..." ng-model="searchTextClient" class="">
+                   </div>
+              </div>
+</div>
+
+
 <div data-page="form-elements" class="page">
   <div class="navbar form-div">
     <div class="navbar-inner">
@@ -87,7 +97,7 @@
                           <div class="item-title fnt_siz_sm">{{field.title}}</div>
                           <div class="item-input">
                             <select ng-change="sample_category_selected()" ng-model="data[field.model]" >
-                                <option ng-selected="data[field.model] == $index" ng-repeat="option in field.options" ng-value="$index">{{option.SampleCategory_Name}}</option>
+                                <option ng-selected="data[field.model] == option.SampleCategory_Id" ng-repeat="option in field.options" ng-value="option.SampleCategory_Id">{{option.SampleCategory_Name}}</option>
                             </select>
                           </div>
                         </div>
@@ -102,7 +112,7 @@
                           <div class="item-title fnt_siz_sm">{{field.title}}</div>
                           <div class="item-input">
                             <select ng-change="sample_product_selected()" ng-model="data[field.model]" >
-                                <option  ng-selected="data[field.model] == $index" ng-repeat="option in field.options" ng-value="$index">{{option.ProductCategory_Name}}</option>
+                                <option  ng-selected="data[field.model] == option.ProductCategory_Id" ng-repeat="option in field.options" ng-value="option.ProductCategory_Id">{{option.ProductCategory_Name}}</option>
                             </select>
                           </div>
                         </div>
@@ -117,7 +127,7 @@
                           <div class="item-title fnt_siz_sm">{{field.title}}</div>
                           <div class="item-input">
                             <select ng-change="sample_selected()" ng-model="data[field.model]" >
-                                <option  ng-selected="data[field.model] == $index" ng-repeat="option in field.options" ng-value="$index">{{option.Sample_Name}}</option>
+                                <option  ng-selected="data[field.model] == option.Sample_ID" ng-repeat="option in field.options" ng-value="option.Sample_ID">{{option.Sample_Name}}</option>
                             </select>
                           </div>
                         </div>
@@ -131,7 +141,7 @@
                           <div class="item-title fnt_siz_sm">{{field.title}}</div>
                           <div class="item-input">
                             <select ng-change="sample_item_selected()" ng-model="data[field.model]" >
-                                <option  ng-selected="data[field.model] == $index" ng-repeat="option in field.options" ng-value="$index">{{option.SampleItem_Name}}</option>
+                                <option  ng-selected="data[field.model] == option.SampleItem_Id" ng-repeat="option in field.options" ng-value="option.SampleItem_Id">{{option.SampleItem_Name}}</option>
                             </select>
                           </div>
                         </div>
@@ -167,14 +177,12 @@
      </div>
 
      <!-- Agency search select body -->
-     <div class="page-content agency-search-select">
-        <div class="list-block">      
-              <div class="item-content"> 
-                   <div style=" width: 94%;" class="item-input item-input-field">
-                     <input type="text" placeholder="Search here..." ng-model="searchTextClient" class="">
-                   </div>
-              </div>
-              <ul>
+     <div class="page-content agency-search-select" style="height:100vh">
+        
+
+
+        <div style="" class="list-block">      
+              <ul style="margin-top:83px;">
                  <li style="padding-left:3%" class="item-inner ag" data-cid="{{agen}}" ng-repeat="agen in agencies | filter:searchTextClient">
                        {{agen.Customer_Name}}
                  </li>
