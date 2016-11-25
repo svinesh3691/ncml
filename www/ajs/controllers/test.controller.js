@@ -2,7 +2,8 @@
 app.controller('tests', ['$scope','fns','seven','$stateParams', '$rootScope',
     function ( $scope , fns , seven , $stateParams , $rootScope) {
         $scope.id = $stateParams.Id; 
-        var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
+        // var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
+        var sample_items  = JSON.parse(localStorage.ncml_sample_items);
 
 
         fns.query('SELECT * FROM Procurement WHERE ProcurementId = ?',[$scope.id],function(res){
@@ -11,8 +12,7 @@ app.controller('tests', ['$scope','fns','seven','$stateParams', '$rootScope',
                 JsonContent.ProcurementId = res.result.rows.item(i).ProcurementId;
                 procurement_data = JsonContent;
 
-                $scope.tests =  sample_cats[procurement_data.sample_category].ProductCategory[procurement_data.product_category].Sample[procurement_data.sample].SampleItem[procurement_data.sample_item].ItemTests;
-                
+                $scope.tests =  sample_items[procurement_data.SampleItem_Id].ItemTests;
              
                 for(i in $scope.tests) {
                      $scope.tests[i].TestMethod[0] = {'Method_Name':'--Select test method--','Method_ID':''};
@@ -40,6 +40,7 @@ app.controller('tests', ['$scope','fns','seven','$stateParams', '$rootScope',
 
          $rootScope.testUpdate = function(){
                 console.log($scope.tests_data);
+                return;
                 seven.showPreloader('Updating..');
                 fns.query('UPDATE Test SET TestsJson = ? , Status = ? WHERE ProcurementId = ?',[JSON.stringify($scope.tests_data), 2, $scope.id],function(res){
                     seven.hidePreloader();
@@ -63,7 +64,8 @@ app.controller('tests_add', ['$scope','fns','seven','$stateParams', '$rootScope'
            $scope.newP = false;
         }
 
-        var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
+        // var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
+        var sample_items  = JSON.parse(localStorage.ncml_sample_items);
 
         $scope.tests = [];
         $scope.tester = {};
@@ -76,7 +78,7 @@ app.controller('tests_add', ['$scope','fns','seven','$stateParams', '$rootScope'
                 JsonContent.ProcurementId = res.result.rows.item(i).ProcurementId;
                 procurement_data = JsonContent;
 
-                $scope.tests =  sample_cats[procurement_data.sample_category].ProductCategory[procurement_data.product_category].Sample[procurement_data.sample].SampleItem[procurement_data.sample_item].ItemTests;
+                $scope.tests =  sample_items[procurement_data.SampleItem_Id].ItemTests;
                 
              
                 for(i in $scope.tests) {
@@ -96,11 +98,14 @@ app.controller('tests_add', ['$scope','fns','seven','$stateParams', '$rootScope'
 
 
         $rootScope.test_add_Update = function() {
-                console.log($scope.tests_data);
+                var tests_data = {};
+                for(var l in $scope.tests_data){
+                    if($scope.tests_data[l]['added']) tests_data[l] = $scope.tests_data[l]; 
+                }
                 seven.showPreloader('Updating..');
                 localStorage.ncml_now_add_pr = 0;
 
-                fns.query('UPDATE Test SET TestsJson = ?, Status = ?  WHERE ProcurementId = ?',[JSON.stringify($scope.tests_data), 2, $scope.id],function(res){
+                fns.query('UPDATE Test SET TestsJson = ?, Status = ?  WHERE ProcurementId = ?',[JSON.stringify(tests_data), 2, $scope.id],function(res){
                     seven.hidePreloader();
                     seven.alert('Updated Successfully');
                     if ($scope.newP) {

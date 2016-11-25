@@ -52,8 +52,8 @@ app.service("fns", ['$http','C', function( $http , C ) {
 								});
 			},
 			function(error){
-				alert("Error processing SQL:"+error.code);
-				alert("Error processing SQL:"+error.message);
+				console.log("Error processing SQL:"+error.code);
+				console.log("Error processing SQL:"+error.message);
 			},
 			function(success){
 			 		// console.log('success');

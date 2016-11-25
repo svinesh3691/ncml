@@ -5,16 +5,20 @@ app.controller('login', ['$scope','fns','seven','$state','services',
         $scope.data = {};
 
         //$scope.data.imei = localStorage.imei || device.uuid+'#'+device.version
-       // alert($scope.data.imei);
         $scope.data.imei = 'test';
 
         $scope.data.username = 'admin';
         $scope.data.password = 'password';
-        //$scope.data.password = 'password';
+
         $scope.signIn = function(){
             seven.showIndicator();
             if($scope.data.username == 'admin' && $scope.data.password == 'password'){
                     localStorage.token = 'admin';
+
+                    localStorage.Imei = '45634534456456453';
+                    localStorage.User_Id = 12;
+                    localStorage.Lab_Id = 36;
+
                     setTimeout(function(){
                         $state.go('app.home');
                     },2000)
@@ -56,8 +60,8 @@ app.controller('app', ['$scope','seven','$state','services','fns',
 
             $scope.sync_raw_data = function() {
                     seven.showIndicator();
-                    // services.master_get('ncml_reponse.json').then(function(res){
-                    services.master_get('GetAllData?Labid=1').then(function(res){
+                    services.master_get('new_ncml.json').then(function(res){
+                    // services.master_get('GetAllData?Labid=1').then(function(res){
                         
                         // Processing Registeration data
                         var Registration_data = {};
@@ -66,49 +70,68 @@ app.controller('app', ['$scope','seven','$state','services','fns',
                         });
 
                         // Processing Lab Data
-                        var LabData = {};
-                        res.data.Lab.map(function(LabDataTemp){
+                        // var LabData = {};
+                        // res.data.Lab.map(function(LabDataTemp){
                                 
-                                var ProductCategoryTemp = {};
-                                LabDataTemp.ProductCategory.map(function(b){
-                                    var SampleTemp = {};
-                                    b.Sample.map(function(c){
-                                        var SampleItemTemp = {};
-                                        c.SampleItem.map(function(d){
-                                            var ItemDetailsTemp = {};
-                                            var ItemTestsTemp = {};
+                        //         var ProductCategoryTemp = {};
+                        //         LabDataTemp.ProductCategory.map(function(b){
+                        //             var SampleTemp = {};
+                        //             b.Sample.map(function(c){
+                        //                 var SampleItemTemp = {};
+                        //                 c.SampleItem.map(function(d){
+                        //                     var ItemDetailsTemp = {};
+                        //                     var ItemTestsTemp = {};
 
-                                            d.ItemDetails.map(function(e){
-                                                ItemDetailsTemp[e.ItemDetails_ID] = e;
-                                            });
-                                            d.ItemTests.map(function(e){
-                                                var TestMethodTemp = {};
-                                                e.TestMethod.map(function(f){
-                                                    TestMethodTemp[f.Method_ID] = f;
-                                                });
-                                                e.TestMethod = TestMethodTemp;
-                                                ItemTestsTemp[e.TestID] = e;
-                                            });
-                                            d.ItemDetails = ItemDetailsTemp;
-                                            d.ItemTests = ItemTestsTemp;
-                                            SampleItemTemp[d.SampleItem_Id] = d
-                                        });
-                                        c.SampleItem = SampleItemTemp; 
-                                        SampleTemp[c.Sample_ID] = c;
-                                    });
-                                    b.Sample = SampleTemp;
-                                    ProductCategoryTemp[b.ProductCategory_Id] = b;
+                        //                     d.ItemDetails.map(function(e){
+                        //                         ItemDetailsTemp[e.ItemDetails_ID] = e;
+                        //                     });
+                        //                     d.ItemTests.map(function(e){
+                        //                         var TestMethodTemp = {};
+                        //                         e.TestMethod.map(function(f){
+                        //                             TestMethodTemp[f.Method_ID] = f;
+                        //                         });
+                        //                         e.TestMethod = TestMethodTemp;
+                        //                         ItemTestsTemp[e.TestID] = e;
+                        //                     });
+                        //                     d.ItemDetails = ItemDetailsTemp;
+                        //                     d.ItemTests = ItemTestsTemp;
+                        //                     SampleItemTemp[d.SampleItem_Id] = d
+                        //                 });
+                        //                 c.SampleItem = SampleItemTemp; 
+                        //                 SampleTemp[c.Sample_ID] = c;
+                        //             });
+                        //             b.Sample = SampleTemp;
+                        //             ProductCategoryTemp[b.ProductCategory_Id] = b;
+                        //         });
+                        //         LabDataTemp.ProductCategory = ProductCategoryTemp;
+                        //     LabData[LabDataTemp.SampleCategory_Id] = LabDataTemp;
+                        // });
+                        // localStorage.ncml_raw_data_lab = JSON.stringify(LabData);
+
+                        var SampleItemTemp = {};
+                        res.data.SampleItem.map(function(d){
+                            var ItemDetailsTemp = {};
+                            var ItemTestsTemp = {};
+
+                            d.ItemDetails.map(function(e){
+                                ItemDetailsTemp[e.ItemDetails_ID] = e;
+                            });
+                            d.ItemTests.map(function(e){
+                                var TestMethodTemp = {};
+                                e.TestMethod.map(function(f){
+                                    TestMethodTemp[f.Method_ID] = f;
                                 });
-                                LabDataTemp.ProductCategory = ProductCategoryTemp;
-
-      
-
-                            LabData[LabDataTemp.SampleCategory_Id] = LabDataTemp;
-
-
+                                e.TestMethod = TestMethodTemp;
+                                ItemTestsTemp[e.TestID] = e;
+                            });
+                            d.ItemDetails = ItemDetailsTemp;
+                            d.ItemTests = ItemTestsTemp;
+                            SampleItemTemp[d.SampleItem_Id] = d
                         });
-                        // console.log(LabData);
-                        localStorage.ncml_raw_data_lab = JSON.stringify(LabData);
+                        // c.SampleItem = SampleItemTemp; 
+
+                        localStorage.ncml_sample_items       = JSON.stringify(SampleItemTemp);
+
                         localStorage.ncml_data_registeration = JSON.stringify(Registration_data);
                         seven.hideIndicator();
 

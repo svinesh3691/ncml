@@ -2,6 +2,15 @@
 app.controller('list_procurement', ['$scope','fns','seven',
     function ( $scope , fns , seven ) {
         seven.showPreloader();
+        
+        if(!localStorage.ncml_sample_items || !localStorage.ncml_data_registeration) {
+                seven.alert('Please do raw data sync to continue');
+            window.location.href = '#/app/home'; 
+        } else {
+          var sample_items  = JSON.parse(localStorage.ncml_sample_items);
+        }
+
+        
 
         $scope.data = [];
         $scope.loading = true; 
@@ -9,12 +18,14 @@ app.controller('list_procurement', ['$scope','fns','seven',
             for (var i = 0;k = res.result.rows.length, i< k; i++) {
                 JsonContent = JSON.parse(res.result.rows.item(i).JsonContent);
                 JsonContent.ProcurementId = res.result.rows.item(i).ProcurementId;
+                JsonContent.SampleItem =  sample_items[JsonContent.SampleItem_Id]
                 $scope.data.push(JsonContent);
             }
             $scope.loading = false;
             seven.hidePreloader();
             $scope.$apply();
         });
+        console.log($scope.data);
 }]);
 
 app.controller('detail_procurement',
@@ -22,12 +33,12 @@ app.controller('detail_procurement',
         function ($scope,fns,seven,$stateParams,$rootScope, $state) {
 
             //You must do raw data sync for this to work
-            if(!localStorage.ncml_raw_data_lab || !localStorage.ncml_data_registeration) {
+            if(!localStorage.ncml_sample_items || !localStorage.ncml_data_registeration) {
                 seven.alert('Please do raw data sync to continue');
                 window.location.href = '#/app/home'; 
                 return;
             } else {
-              var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
+              var sample_items  = JSON.parse(localStorage.ncml_sample_items);
               var agencies    = JSON.parse(localStorage.ncml_data_registeration);
             }
 
@@ -36,7 +47,7 @@ app.controller('detail_procurement',
             var image;
             $scope.images = [];
             $scope.id = $stateParams.Id;
-            $scope.sample_cats = sample_cats;
+            $scope.sample_items = sample_items;
             $scope.agencies = agencies;
 
             var list_images = function () {
@@ -57,20 +68,22 @@ app.controller('detail_procurement',
                 JsonContent = JSON.parse(res.result.rows.item(i).JsonContent);
                 JsonContent.ProcurementId = res.result.rows.item(i).ProcurementId;
                 $scope.data = JsonContent;
-                console.log('$scope.data')
-                console.log(JSON.stringify($scope.data))
 
+                $scope.data['Customer_Name'] = agencies[$scope.data['Customer_ID']].Customer_Name;
                 $scope.fields = [];
-                var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
+                var thisSampleItem = sample_items[$scope.data.SampleItem_Id];
 
                 for( var itemDet in thisSampleItem.ItemDetails) {
+                    if($scope.data['ItemDetails'][itemDet]) {
+                       var ItemDetails_Desc =  $scope.data['ItemDetails'][itemDet]['ItemDetails_Desc'];
+                    } else {
+                       var ItemDetails_Desc = '';
+                    }
+                    console.log();
                     var sampleItemField = {
                          title: thisSampleItem.ItemDetails[itemDet].ItemDetails_Name,
-                         model: 'extra_fields'+thisSampleItem.ItemDetails[itemDet].ItemDetails_ID,
-                         type: 'text',
-                         real_type: 'text',
-                         id     : 'sample_item',
-                         icon: 'icon-form-url',
+                         model: 'ItemDetails',
+                         value : ItemDetails_Desc 
 
                      }
                     $scope.fields.push(sampleItemField);
@@ -261,17 +274,18 @@ app.controller('edit_procurement',
     ['$scope','fns','seven','$state','$stateParams',
         function ( $scope , fns , seven , $state, $stateParams) {
             //console.log('Edit Procurement'); 
+            var ItemDetails;
 
             //Tou must do raw data sync for this to work
-            if(!localStorage.ncml_raw_data_lab || !localStorage.ncml_data_registeration) {
+            if(!localStorage.ncml_sample_items || !localStorage.ncml_data_registeration) {
                 seven.alert('Please do raw data sync to continue');
                 window.location.href = '#/app/home'; 
                 return;
             } else {
-              var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
+              var sample_items  = JSON.parse(localStorage.ncml_sample_items);
               var agencies    = JSON.parse(localStorage.ncml_data_registeration);
-              $scope.agencies    = agencies;
             }
+
 
             seven.showPreloader();
             $scope.id = $stateParams.Id; 
@@ -282,8 +296,14 @@ app.controller('edit_procurement',
                 $scope.data = JsonContent;
                 $scope.data.SamplingDate = new Date($scope.data.SamplingDate);
 
-                 $scope.agencyName = $scope.data.client.Customer_Name;
+                $scope.agencyName = agencies[$scope.data['Customer_ID']].Customer_Name;
 
+                var  currentItemDetails = $scope.data.ItemDetails;
+                $scope.data.ItemDetails = {};
+                for (var ij in currentItemDetails) {
+                    $scope.data.ItemDetails[ij] = currentItemDetails[ij].ItemDetails_Desc;
+                }
+                console.log($scope.data);
 
                 $scope.fields = [
                      {
@@ -297,7 +317,7 @@ app.controller('edit_procurement',
                          title: 'Sampling date',
                          model: 'SamplingDate', 
                          type: 'text',
-                         real_type: 'date',
+                         real_type: 'datetime-local',
                          maxLength: 25,
                          icon:'icon-form-calendar' 
                      },
@@ -308,66 +328,31 @@ app.controller('edit_procurement',
                          real_type: 'text',
                          icon: 'icon-form-name'
                      },
-                     {
-                         title: 'Sample Category',
-                         model: 'sample_category',
-                         type: 'select_sample_category',
-                         icon: 'icon-form-url',
-                         options: sample_cats
-
-                     },
-                     {
-                           title   : 'Product Category',
-                           model   : 'product_category',
-                           type    : 'select_product_category',
-                           icon    : 'icon-form-url',
-                           options : sample_cats[$scope.data.sample_category].ProductCategory
-
-                      },
-                      {
-                           title  : 'Sample',
-                           model  : 'sample',
-                           type   : 'select_sample',
-                           icon   : 'icon-form-url',
-                           options: sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample
-                      },
                       {
                            title: 'Sample Item',
                            model: 'sample_item',
                            type: 'select_sample_item',
                            icon: 'icon-form-url',
-                           options: sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem
+                           options: sample_items
                       }
                 ];
 
 
-                var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
+                var thisSampleItem =  sample_items[$scope.data.SampleItem_Id];
 
-                // for(var i = 0;i < thisSampleItem.ItemDetails.length; i++) {
+                ItemDetails = thisSampleItem.ItemDetails
 
-                //     var sampleItemField = {
-                //          title: thisSampleItem.ItemDetails[i].ItemDetails_Name,
-                //          model: 'extra_fields'+i,
-                //          type: 'text',
-                //          real_type: 'text',
-                //          id     : 'sample_item',
-                //          icon: 'icon-form-url',
 
-                //      }
-                //     $scope.fields.push(sampleItemField);
 
-                // }
-
-                 for( var itemDet in thisSampleItem.ItemDetails) {
-                    console.log(itemDet);
+                for( var itemDet in thisSampleItem.ItemDetails) {
                     var sampleItemField = {
                          title: thisSampleItem.ItemDetails[itemDet].ItemDetails_Name,
-                         model: 'extra_fields'+thisSampleItem.ItemDetails[itemDet].ItemDetails_ID,
-                         type: 'text',
+                         model: 'ItemDetails',
+                         ind : itemDet, 
+                         type: 'extra_text',
                          real_type: 'text',
                          id     : 'sample_item',
                          icon: 'icon-form-url',
-
                      }
                     $scope.fields.push(sampleItemField);
 
@@ -385,6 +370,18 @@ app.controller('edit_procurement',
             }
             $scope.save = function(data) {
                 seven.showPreloader('Updating..');
+                var currentItemDetails = data.ItemDetails; 
+                console.log(currentItemDetails);
+                console.log(ItemDetails);
+                // return;
+                for( var l in currentItemDetails) {
+                  data.ItemDetails[l] = {
+                      'ItemDetails_Name' : ItemDetails[l].ItemDetails_Name,
+                      'ItemDetails_Desc' : currentItemDetails[l]
+                  }
+                }
+
+
                 fns.query('UPDATE Procurement SET JsonContent = ?,  Status = ? WHERE ProcurementId = ?',[JSON.stringify(data), 2, $scope.id],function(res){
                     seven.hidePreloader();
                     seven.alert('Updated Successfully','Alert',function(){
@@ -395,84 +392,27 @@ app.controller('edit_procurement',
 
 
 
-            $scope.sample_category_selected = function() {
-
-                //console.log('sample_category_selected');
-                $scope.fields = $scope.fields.slice(0,4);
-                
-                $scope.data.product_category = null;
-                $scope.data.sample = null;
-                $scope.data.sample_item = null;
-
-                $scope.data.sample_category_id = sample_cats[$scope.data.sample_category].SampleCategory_Id;
-                var ProductCategoryField = {
-                     title   : 'Product Category',
-                     model   : 'product_category',
-                     type    : 'select_product_category',
-                     icon    : 'icon-form-url',
-                     options : sample_cats[$scope.data.sample_category].ProductCategory
-
-                }
-
-                $scope.fields.push(ProductCategoryField);
-                    
-                //console.log($scope.data);
-
-            }
+           
 
 
-            $scope.sample_product_selected = function() {
-                //console.log('sample_product_selected');
-                $scope.data.sample = null;
-                $scope.data.sample_item = null;
-                $scope.fields = $scope.fields.slice(0,5);
-                $scope.data.product_category_id = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].ProductCategory_Id;
-                var sampleField = {
-                     title  : 'Sample',
-                     model  : 'sample',
-                     type   : 'select_sample',
-                     icon   : 'icon-form-url',
-                     options: sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample
-                 }
-                 $scope.fields.push(sampleField);
-                //console.log($scope.data);
-
-            }
+          
 
 
-            $scope.sample_selected = function() {
-                //console.log('sample_selected');
-                $scope.data.sample_item = null;
-                $scope.fields = $scope.fields.slice(0,6);
-                $scope.data.sample_id =  sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].Sample_ID;
-                var sampleItemField = {
-                     title: 'Sample Item',
-                     model: 'sample_item',
-                     type: 'select_sample_item',
-                     icon: 'icon-form-url',
-                     options: sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem
-                 }
-                 $scope.fields.push(sampleItemField);
-
-
-
-                //console.log($scope.data);
-
-            }
-
+          
 
             $scope.sample_item_selected = function() {
-                //console.log('sample_item_selected');
-                $scope.fields = $scope.fields.slice(0,7);
-                $scope.data.sample_item_id = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item].SampleItem_Id;
-                var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
+                $scope.fields = $scope.fields.slice(0,4); // $scope.fields.slice(0,7);
 
-                for(var i = 0;i < thisSampleItem.ItemDetails.length; i++) {
+                $scope.data.SampleItem_Id = sample_items[$scope.data.sample_item].SampleItem_Id;
+                var thisSampleItem = sample_items[$scope.data.sample_item];
+                ItemDetails = thisSampleItem.ItemDetails
 
+                for( var itemDet in thisSampleItem.ItemDetails) {
                     var sampleItemField = {
-                         title: thisSampleItem.ItemDetails[i].ItemDetails_Name,
-                         model: 'extra_fields'+i,
-                         type: 'text',
+                         title: thisSampleItem.ItemDetails[itemDet].ItemDetails_Name,
+                         model: 'ItemDetails',
+                         ind : itemDet, 
+                         type: 'extra_text',
                          real_type: 'text',
                          id     : 'sample_item',
                          icon: 'icon-form-url',
@@ -481,11 +421,11 @@ app.controller('edit_procurement',
                     $scope.fields.push(sampleItemField);
 
                 }
-
-                //console.log($scope.fields);
             }
 
-
+             // setTimeout(function(){
+             //    $scope.sample_item_selected();
+             // },1234)
 
             /* For client filter */
             $scope.closeAgencySelect = function(){
@@ -508,25 +448,29 @@ app.controller('edit_procurement',
 
 app.controller('add_procurement', ['$scope','fns','seven','$state',
     function ( $scope , fns , seven , $state) {
+
+            var ItemDetails;
             // seven.showPreloader('Loading...');
             setTimeout(function(){
               seven.hidePreloader();
             },1789)
+
             //You must do raw data sync for this to work
-            if(!localStorage.ncml_raw_data_lab || !localStorage.ncml_data_registeration) {
+            if(!localStorage.ncml_sample_items || !localStorage.ncml_data_registeration) {
                 seven.alert('Please do raw data sync to continue');
                 window.location.href = '#/app/home'; 
                 return;
             } else {
-                var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
-                var agencies    = JSON.parse(localStorage.ncml_data_registeration);
-                $scope.agencies    = agencies;
+                var sample_items  = JSON.parse(localStorage.ncml_sample_items);
+                var agencies      = JSON.parse(localStorage.ncml_data_registeration);
+                $scope.agencies   = agencies;
             }
-
+            console.log(sample_items);
 
             //Initializing datas
             $scope.data = {};
-            $scope.data.SamplingDate = new Date();
+            // $scope.data.Sampling_Datetime = new Date();
+            $scope.data.Sampling_Datetime = '';
             
             
             //Setting up the fields
@@ -540,9 +484,9 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                              },
                              {
                                  title: 'Sampling date',
-                                 model: 'SamplingDate', 
+                                 model: 'Sampling_Datetime', 
                                  type: 'text',
-                                 real_type: 'date',
+                                 real_type: 'datetime-local',
                                  maxLength: 25,
                                  icon:'icon-form-calendar' 
                              },
@@ -554,11 +498,11 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                                  icon: 'icon-form-name'
                              },
                              {
-                                 title: 'Sample Category',
-                                 model: 'sample_category',
-                                 type: 'select_sample_category',
-                                 icon: 'icon-form-url',
-                                 options: sample_cats
+                                  title: 'Sample Item',
+                                  model: 'sample_item',
+                                  type: 'select_sample_item',
+                                  icon: 'icon-form-url',
+                                  options: sample_items
 
                              }
             ];
@@ -569,17 +513,33 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
             //For Save
             $scope.save = function(data) {
 
+                
 
 
-                if(!$scope.data.client || !$scope.data.SamplingDate || !$scope.data.FarmerName || !$scope.data.sample_category ||  !$scope.data.product_category ||  !$scope.data.sample ||  !$scope.data.sample_item){
+                if(!$scope.data.Customer_ID || !$scope.data.Sampling_Datetime || !$scope.data.SampleItem_Id){
                         seven.alert('Please enter all the values!');
                         return false;
                 }
-                if(!(new Date($scope.data.SamplingDate)<= new Date()))  {
-                        seven.alert('The date must be equal/less than today');
-                        return false;
+                // if(!(new Date($scope.data.SamplingDate)<= new Date()))  {
+                //         seven.alert('The date must be equal/less than today');
+                //         return false;
+                // }
+                
+
+                var currentItemDetails = data.ItemDetails; 
+                for( var l in currentItemDetails) {
+                  data.ItemDetails[l] = {
+                      'ItemDetails_Name' : ItemDetails[l].ItemDetails_Name,
+                      'ItemDetails_Desc' : currentItemDetails[l]
+                  }
                 }
-              
+                
+                /*Data Format*/
+                delete data.sample_item;  
+                delete data.FarmerName;
+                data.Imei = localStorage.Imei
+                data.User_Id = localStorage.User_Id
+                data.Lab_Id = localStorage.Lab_Id
                 seven.showPreloader('Getting Location..');
 
 
@@ -595,11 +555,10 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                       //       'Speed: '             + position.coords.speed             + '\n' +
                       //       'Timestamp: '         + position.timestamp                + '\n');
                       seven.showPreloader('Saving Data..');
-                      data.loc = {}; 
-                      data.loc.latitude = position.coords.latitude; 
-                      data.loc.longitude = position.coords.longitude; 
+                      data.Location_Coordinates = position.coords.latitude+'-'+position.coords.longitude; 
+                      
+                      console.log(data);
                       fns.query('INSERT into Procurement (JsonContent,Status,ServerId) VALUES (?,?,?)',[JSON.stringify(data),1,0],function(res){
-                              
                               lastInsertId = res.result.insertId;
 
                               var tests =  {};
@@ -623,80 +582,34 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                   seven.alert('Error getting location, Please try again.','Alert',function(){
 
                   })
-                  // alert('code: '    + error.code    + '\n' + // 'message: ' + error.message + '\n','Testing');
                 }
 
-                navigator.geolocation.getCurrentPosition(onSuccess,onError,{timeout: 100000, enableHighAccuracy: true});
-
+                // navigator.geolocation.getCurrentPosition(onSuccess,onError,{timeout: 100000, enableHighAccuracy: true});
+                onSuccess({
+                  "coords" : {
+                    "latitude"  : 123,
+                    "longitude" : 321
+                  }
+                });
 
                 
             }
 
-            $scope.sample_category_selected = function() {
 
-                $scope.fields = $scope.fields.slice(0,4);
-                
-                $scope.data.product_category = null;
-                $scope.data.sample = null;
-                $scope.data.sample_item = null;
-
-                $scope.data.sample_category_id = sample_cats[$scope.data.sample_category].SampleCategory_Id;
-                var ProductCategoryField = {
-                     title   : 'Product Category',
-                     model   : 'product_category',
-                     type    : 'select_product_category',
-                     icon    : 'icon-form-url',
-                     options : sample_cats[$scope.data.sample_category].ProductCategory
-
-                }
-
-                $scope.fields.push(ProductCategoryField);
-            }
-
-            $scope.sample_product_selected = function() {
-                $scope.data.sample = null;
-                $scope.data.sample_item = null;
-                $scope.fields = $scope.fields.slice(0,5);
-                $scope.data.product_category_id = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].ProductCategory_Id;
-                var sampleField = {
-                     title  : 'Sample',
-                     model  : 'sample',
-                     type   : 'select_sample',
-                     icon   : 'icon-form-url',
-                     options: sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample
-                 }
-                 $scope.fields.push(sampleField);
-            }
-
-            $scope.sample_selected = function() {
-                $scope.data.sample_item = null;
-                $scope.fields = $scope.fields.slice(0,6);
-                $scope.data.sample_id =  sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].Sample_ID;
-                var sampleItemField = {
-                     title: 'Sample Item',
-                     model: 'sample_item',
-                     type: 'select_sample_item',
-                     icon: 'icon-form-url',
-                     options: sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem
-                 }
-                 $scope.fields.push(sampleItemField);
-
-
-
-            }
 
             $scope.sample_item_selected = function() {
-                $scope.fields = $scope.fields.slice(0,7);
-                $scope.data.sample_item_id = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item].SampleItem_Id;
-                var thisSampleItem = sample_cats[$scope.data.sample_category].ProductCategory[$scope.data.product_category].Sample[$scope.data.sample].SampleItem[$scope.data.sample_item];
+                $scope.fields = $scope.fields.slice(0,4); // $scope.fields.slice(0,7);
 
+                $scope.data.SampleItem_Id = sample_items[$scope.data.sample_item].SampleItem_Id;
+                var thisSampleItem = sample_items[$scope.data.sample_item];
+                ItemDetails = thisSampleItem.ItemDetails
 
                 for( var itemDet in thisSampleItem.ItemDetails) {
-                    console.log(itemDet);
                     var sampleItemField = {
                          title: thisSampleItem.ItemDetails[itemDet].ItemDetails_Name,
-                         model: 'extra_fields'+thisSampleItem.ItemDetails[itemDet].ItemDetails_ID,
-                         type: 'text',
+                         model: 'ItemDetails',
+                         ind : itemDet, 
+                         type: 'extra_text',
                          real_type: 'text',
                          id     : 'sample_item',
                          icon: 'icon-form-url',
@@ -720,7 +633,7 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
             });
             $(document).on('click','.ag',function(){
                 var cid = $(this).data('cid');;
-                $scope.data.client = cid;
+                $scope.data.Customer_ID = cid.Customer_ID;
                 $scope.agencyName = cid.Customer_Name;
                 $scope.searchTextClient ='';
                 $scope.$apply();

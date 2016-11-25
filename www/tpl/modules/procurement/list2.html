@@ -34,12 +34,12 @@
       <ul>
         <li ng-repeat="dta in data">
           <a href="#/app/detail_procurement/{{dta.ProcurementId}}" class="item-link no-ripple">
-            <p class="color-gray x_time">Collected on {{dta.SamplingDate | date}}</p>
+            <p class="color-gray x_time">Collected on {{dta.Sampling_Datetime | date}}</p>
 
             <div class="item-content">
 
               <div class="item-inner"> 
-                <div class="item-title">{{dta.FarmerName}}</div>
+                <div class="item-title">{{dta.SampleItem.SampleItem_Name}}</div>
                 <div class="item-after">{{dta.Commodity}}</div>
               </div>
             </div>

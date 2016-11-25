@@ -41,13 +41,13 @@
               <div class="item-textx">
                 <div class="item-input item-input-field">
                     <!-- <input type="text"> -->
-                    <select ng-if="!tests_data[test.TestID]['tesmet']" ng-init="tests_data[test.TestID]['tesmet'] = ''" ng-model="tests_data[test.TestID]['tesmet']" >
-                                <option ng-init="" ng-selected="tests_data[test.TestID]['tesmet'] == option.Method_ID" ng-repeat="option in test.TestMethod" ng-value="option.Method_ID">{{option.Method_Name}}</option>
+                    <select ng-if="!tests_data[test.TestID]['Method_ID']" ng-init="tests_data[test.TestID]['Method_ID'] = ''" ng-model="tests_data[test.TestID]['Method_ID']" >
+                                <option ng-init="" ng-selected="tests_data[test.TestID]['Method_ID'] == option.Method_ID" ng-repeat="option in test.TestMethod" ng-value="option.Method_ID">{{option.Method_Name}}</option>
                     </select>
 
 
-                    <select ng-if="tests_data[test.TestID]['tesmet']" ng-model="tests_data[test.TestID]['tesmet']" >
-                                <option ng-init="" ng-selected="tests_data[test.TestID]['tesmet'] == option.Method_ID" ng-repeat="option in test.TestMethod" ng-value="option.Method_ID">{{option.Method_Name}}</option>
+                    <select ng-if="tests_data[test.TestID]['Method_ID']" ng-model="tests_data[test.TestID]['Method_ID']" >
+                                <option ng-init="" ng-selected="tests_data[test.TestID]['Method_ID'] == option.Method_ID" ng-repeat="option in test.TestMethod" ng-value="option.Method_ID">{{option.Method_Name}}</option>
                     </select>
                 </div>
 

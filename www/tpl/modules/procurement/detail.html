@@ -32,7 +32,7 @@
               <div class="item-inner">
                 <div class="item-subtitle">SamplingDate</div>
                 <div class="item-title-row">
-                  <div class="item-title">{{data.SamplingDate | date}}</div>
+                  <div class="item-title">{{data.Sampling_Datetime | date}} </div>
                 </div>
               </div>
             </li>
@@ -40,47 +40,17 @@
               <div class="item-inner">
                 <div class="item-subtitle">Client</div>
                 <div class="item-title-row">
-                  <div class="item-title">{{data.client.Customer_Name}}</div>
+                  <div class="item-title">{{data.Customer_Name}}</div>
                 </div>
               </div>
             </li>
 
-            <li class="item-content">
-              <div class="item-inner">
-                <div class="item-subtitle"> Sample Category</div>
-                <div class="item-title-row">
-                  <div class="item-title">{{sample_cats[data.sample_category].SampleCategory_Name }}</div>
-                </div>
-              </div>
-            </li>
-
-
-            <li class="item-content">
-              <div class="item-inner">
-                <div class="item-subtitle"> Product Category</div>
-                <div class="item-title-row">
-                  <div class="item-title">{{sample_cats[data.sample_category].ProductCategory[data.product_category].ProductCategory_Name }}</div>
-                </div>
-              </div>
-            </li>
-
-
-            <li class="item-content">
-              <div class="item-inner">
-                <div class="item-subtitle"> Sample </div>
-                <div class="item-title-row">
-                  <div class="item-title">{{sample_cats[data.sample_category].ProductCategory[data.product_category].Sample[data.sample].Sample_Name }}</div>
-                </div>
-              </div>
-            </li>
-
-
-
+            
             <li class="item-content">
               <div class="item-inner">
                 <div class="item-subtitle"> Sample Item </div>
                 <div class="item-title-row">
-                  <div class="item-title">{{sample_cats[data.sample_category].ProductCategory[data.product_category].Sample[data.sample].SampleItem[data.sample_item].SampleItem_Name }}</div>
+                  <div class="item-title">{{sample_items[data.SampleItem_Id].SampleItem_Name }}</div>
                 </div>
               </div>
             </li>
@@ -92,7 +62,7 @@
               <div class="item-inner">
                 <div class="item-subtitle"> {{field.title}} </div>
                 <div class="item-title-row">
-                  <div class="item-title">{{data[field.model] }}</div>
+                  <div class="item-title">{{field.value }}</div>
                 </div>
               </div>
             </li>
@@ -102,7 +72,7 @@
               <div class="item-inner">
                 <div class="item-subtitle"> Lat- Long </div>
                 <div class="item-title-row">
-                  <div class="item-title"> {{data.loc.latitude}} - {{data.loc.longitude}} </div>
+                  <div class="item-title"> {{data.Location_Coordinates}} </div>
                 </div>
               </div>
             </li>
