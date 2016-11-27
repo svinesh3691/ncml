@@ -9,9 +9,9 @@ app.factory("seven", ['$http', function($http) {
 
 app.factory("services", ['$http', function($http) {
     // var serviceBase = 'http://localhost/OFC/factory/pro/';
-    var serviceBase = 'http://localhost/';
+    // var serviceBase = 'http://localhost/';
     // var serviceBase = 'http://www.ncmlapi.kritilims.in/Service.asmx/';
-    // var serviceBase = 'http://192.168.43.231/';
+    var serviceBase = 'http://192.168.43.231/';
     // var serviceBase = 'http://52.172.1.50:160/Service.asmx/';
     
     var obj = {};

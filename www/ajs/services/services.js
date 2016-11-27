@@ -25,7 +25,7 @@ app.service("fns", ['$http','C', function( $http , C ) {
 			// 	   			tx.executeSql( 'DROP TABLE Test');
 			// 	   			console.log('Drop');
 			// });
-			var procurement_main 	= 'CREATE TABLE IF NOT EXISTS Procurement (ProcurementId INTEGER PRIMARY KEY AUTOINCREMENT, JsonContent TEXT, Status int, ServerId int)';
+			var procurement_main 	= 'CREATE TABLE IF NOT EXISTS Procurement (ProcurementId INTEGER PRIMARY KEY AUTOINCREMENT, JsonContent TEXT, Test_Remarks TEXT, Test_StartDate TEXT,  Test_CompDate TEXT, Status int, Server_Unique_Id int, Server_Disp_Id int, DateTime TEXT)';
 			this.query(procurement_main,[],function(res){
 				// console.log(res);
 			});

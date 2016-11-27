@@ -25,7 +25,6 @@ app.controller('list_procurement', ['$scope','fns','seven',
             seven.hidePreloader();
             $scope.$apply();
         });
-        console.log($scope.data);
 }]);
 
 app.controller('detail_procurement',
@@ -74,7 +73,7 @@ app.controller('detail_procurement',
                 var thisSampleItem = sample_items[$scope.data.SampleItem_Id];
 
                 for( var itemDet in thisSampleItem.ItemDetails) {
-                    if($scope.data['ItemDetails'][itemDet]) {
+                    if($scope.data['ItemDetails'] && $scope.data['ItemDetails'][itemDet]) {
                        var ItemDetails_Desc =  $scope.data['ItemDetails'][itemDet]['ItemDetails_Desc'];
                     } else {
                        var ItemDetails_Desc = '';
@@ -465,7 +464,6 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                 var agencies      = JSON.parse(localStorage.ncml_data_registeration);
                 $scope.agencies   = agencies;
             }
-            console.log(sample_items);
 
             //Initializing datas
             $scope.data = {};
@@ -489,13 +487,6 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                                  real_type: 'datetime-local',
                                  maxLength: 25,
                                  icon:'icon-form-calendar' 
-                             },
-                             {
-                                 title: 'Farmer name',
-                                 model: 'FarmerName',
-                                 type: 'text',
-                                 real_type: 'text',
-                                 icon: 'icon-form-name'
                              },
                              {
                                   title: 'Sample Item',
@@ -557,8 +548,7 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                       seven.showPreloader('Saving Data..');
                       data.Location_Coordinates = position.coords.latitude+'-'+position.coords.longitude; 
                       
-                      console.log(data);
-                      fns.query('INSERT into Procurement (JsonContent,Status,ServerId) VALUES (?,?,?)',[JSON.stringify(data),1,0],function(res){
+                      fns.query('INSERT into Procurement (JsonContent,Status,Server_Unique_Id,Server_Disp_Id,DateTime) VALUES (?,?,?,?,?)',[JSON.stringify(data),1,0,0,new Date()],function(res){
                               lastInsertId = res.result.insertId;
 
                               var tests =  {};
