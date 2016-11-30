@@ -19,7 +19,7 @@ app.controller('tests', ['$scope','fns','seven','$stateParams', '$rootScope',
                 else already_started = false;
                 $scope.pro.remarks      = res.result.rows.item(i).Test_Remarks;
 
-                if (res.result.rows.item(i).Test_CompDate) {
+                if (res.result.rows.item(i).Test_CompDate && res.result.rows.item(i).Test_CompDate != 0) {
                     $scope.comp = true;
                 } else $scope.comp = false;
                 $scope.tests =  sample_items[procurement_data.SampleItem_Id].ItemTests;

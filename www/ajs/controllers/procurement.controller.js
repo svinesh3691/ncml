@@ -467,8 +467,8 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
 
             //Initializing datas
             $scope.data = {};
-            // $scope.data.Sampling_Datetime = new Date();
-            $scope.data.Sampling_Datetime = '';
+            $scope.data.Sampling_Datetime = new Date();
+            // $scope.data.Sampling_Datetime = '';
             
             
             //Setting up the fields
@@ -525,17 +525,20 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                   }
                 }
                 
-                /*Data Format*/
-                delete data.sample_item;  
-                delete data.FarmerName;
-                data.Imei = localStorage.Imei
-                data.User_Id = localStorage.User_Id
-                data.Lab_Id = localStorage.Lab_Id
+          
                 seven.showPreloader('Getting Location..');
 
 
 
                 var onSuccess = function(position) {
+
+                          /*Data Format*/
+                delete data.sample_item;  
+                delete data.FarmerName;
+                data.Imei = localStorage.Imei
+                data.User_Id = localStorage.User_Id
+                data.Lab_Id = localStorage.Lab_Id
+                
                       seven.hidePreloader();
                       // alert('Latitude: '          + position.coords.latitude          + '\n' +
                       //       'Longitude: '         + position.coords.longitude         + '\n' +
