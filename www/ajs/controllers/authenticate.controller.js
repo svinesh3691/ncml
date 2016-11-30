@@ -60,8 +60,8 @@ app.controller('app', ['$scope','seven','$state','services','fns',
 
             $scope.sync_raw_data = function() {
                     seven.showIndicator();
-                    services.master_get('new_ncml.json').then(function(res){
-                    // services.master_get('GetAllData?Labid=1').then(function(res){
+                    // services.master_get('new_ncml.json').then(function(res){
+                    services.master_get('GetAllData?Labid=1').then(function(res){
                         
                         // Processing Registeration data
                         var Registration_data = {};

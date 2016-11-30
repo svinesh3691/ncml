@@ -5,7 +5,6 @@ app.controller('tests', ['$scope','fns','seven','$stateParams', '$rootScope',
         $scope.pro = {};
         var already_started;
         $scope.id = $stateParams.Id; 
-        // var sample_cats = JSON.parse(localStorage.ncml_raw_data_lab);
         var sample_items  = JSON.parse(localStorage.ncml_sample_items);
 
 
@@ -20,6 +19,9 @@ app.controller('tests', ['$scope','fns','seven','$stateParams', '$rootScope',
                 else already_started = false;
                 $scope.pro.remarks      = res.result.rows.item(i).Test_Remarks;
 
+                if (res.result.rows.item(i).Test_CompDate) {
+                    $scope.comp = true;
+                } else $scope.comp = false;
                 $scope.tests =  sample_items[procurement_data.SampleItem_Id].ItemTests;
              
                 for(i in $scope.tests) {

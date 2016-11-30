@@ -574,13 +574,13 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                   })
                 }
 
-                // navigator.geolocation.getCurrentPosition(onSuccess,onError,{timeout: 100000, enableHighAccuracy: true});
-                onSuccess({
-                  "coords" : {
-                    "latitude"  : 123,
-                    "longitude" : 321
-                  }
-                });
+                navigator.geolocation.getCurrentPosition(onSuccess,onError,{timeout: 100000, enableHighAccuracy: true});
+                // onSuccess({
+                //   "coords" : {
+                //     "latitude"  : 123,
+                //     "longitude" : 321
+                //   }
+                // });
 
                 
             }

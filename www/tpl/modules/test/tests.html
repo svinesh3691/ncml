@@ -28,13 +28,13 @@
                   <div class="x-item-half"> 
                     <div class="item-title x-test-label">Unit</div>
                     <div class="item-input item-input-field">
-                      <input type="text" placeholder="Spec" ng-model="tests_data[test.TestID]['Method_Unit']"   readonly value="{{test.TestMethod[tests_data[test.TestID].Method_ID].Method_Unit}}">
+                      <input type="text" ng-model="tests_data[test.TestID]['Method_Unit']"   readonly value="{{test.TestMethod[tests_data[test.TestID].Method_ID].Method_Unit}}">
                     </div>
                   </div>
                   <div class="x-item-half"> 
                     <div class="item-title x-test-label">Req</div>
                     <div class="item-input item-input-field">
-                        <input type="text" placeholder="Enter Result" ng-model="tests_data[test.TestID]['Method_Req']" readonly value="{{test.TestMethod[tests_data[test.TestID].Method_ID].Method_Req}}"> 
+                        <input type="text" ng-model="tests_data[test.TestID]['Method_Req']" readonly value="{{test.TestMethod[tests_data[test.TestID].Method_ID].Method_Req}}"> 
                     </div>
                   </div>
                 </div>
@@ -43,13 +43,13 @@
                   <div class="x-item-half"> 
                     <div class="item-title x-test-label">Limit</div>
                     <div class="item-input item-input-field">
-                      <input type="text" placeholder="Enter Result" ng-model="tests_data[test.TestID]['Method_Limit']" > 
+                      <input type="text" ng-readonly="comp" placeholder="Enter Limit" ng-model="tests_data[test.TestID]['Method_Limit']" > 
                     </div>
                   </div>
                   <div class="x-item-half"> 
                     <div class="item-title x-test-label">Result</div>
                     <div class="item-input item-input-field">
-                        <input type="text" placeholder="Enter Result" ng-model="tests_data[test.TestID]['Test_Result']"> 
+                        <input type="text" ng-readonly="comp" placeholder="Enter Result" ng-model="tests_data[test.TestID]['Test_Result']"> 
                     </div>
                   </div>
                 </div>
@@ -57,7 +57,7 @@
 
               </li>
           
-            <li>
+            <li ng-if="!comp">
               <div class="item-content">
                 <div class="item-inner">
                   <div class="item-title label">Completed</div>
@@ -76,7 +76,7 @@
                 <div class="item-inner">
                   <div class="item-title label">Remarks</div>
                   <div class="item-input item-input-field">
-                    <textarea ng-model="pro.remarks" class="resizable" style="height:100px;"></textarea>
+                    <textarea ng-readonly="comp" ng-model="pro.remarks" class="resizable" style="height:100px;"></textarea>
                   </div>
                 </div>
               </div>
