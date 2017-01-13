@@ -10,7 +10,8 @@ app.controller('list_procurement', ['$scope','fns','seven',
           var sample_items  = JSON.parse(localStorage.ncml_sample_items);
         }
 
-        
+        console.log(localStorage.ncml_sample_items);
+        console.log(localStorage.ncml_data_registeration);
 
         $scope.data = [];
         $scope.loading = true; 
@@ -447,7 +448,6 @@ app.controller('edit_procurement',
 
 app.controller('add_procurement', ['$scope','fns','seven','$state',
     function ( $scope , fns , seven , $state) {
-
             var ItemDetails;
             // seven.showPreloader('Loading...');
             setTimeout(function(){
@@ -516,15 +516,19 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                 //         return false;
                 // }
                 
-
+                console.log(data.ItemDetails);
                 var currentItemDetails = data.ItemDetails; 
+                console.log(currentItemDetails);
                 for( var l in currentItemDetails) {
                   data.ItemDetails[l] = {
-                      'ItemDetails_Name' : ItemDetails[l].ItemDetails_Name,
-                      'ItemDetails_Desc' : currentItemDetails[l]
+                      'ItemDetails_ID'      : ItemDetails[l].ItemDetails_ID,
+                      'ItemDetails_Name'    : ItemDetails[l].ItemDetails_Name,
+                      'ItemDetails_Desc'    : currentItemDetails[l],
+                      'SampleItem_Id'       : data.SampleItem_Id
                   }
                 }
-                
+
+               
           
                 seven.showPreloader('Getting Location..');
 
@@ -551,6 +555,8 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                       seven.showPreloader('Saving Data..');
                       data.Location_Coordinates = position.coords.latitude+'-'+position.coords.longitude; 
                       
+                      
+
                       fns.query('INSERT into Procurement (JsonContent,Status,Server_Unique_Id,Server_Disp_Id,DateTime) VALUES (?,?,?,?,?)',[JSON.stringify(data),1,0,0,new Date()],function(res){
                               lastInsertId = res.result.insertId;
 
@@ -577,13 +583,13 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                   })
                 }
 
-                navigator.geolocation.getCurrentPosition(onSuccess,onError,{timeout: 100000, enableHighAccuracy: true});
-                // onSuccess({
-                //   "coords" : {
-                //     "latitude"  : 123,
-                //     "longitude" : 321
-                //   }
-                // });
+                // navigator.geolocation.getCurrentPosition(onSuccess,onError,{timeout: 100000, enableHighAccuracy: true});
+                onSuccess({
+                  "coords" : {
+                    "latitude"  : 123,
+                    "longitude" : 321
+                  }
+                });
 
                 
             }
@@ -596,7 +602,6 @@ app.controller('add_procurement', ['$scope','fns','seven','$state',
                 $scope.data.SampleItem_Id = sample_items[$scope.data.sample_item].SampleItem_Id;
                 var thisSampleItem = sample_items[$scope.data.sample_item];
                 ItemDetails = thisSampleItem.ItemDetails
-
                 for( var itemDet in thisSampleItem.ItemDetails) {
                     var sampleItemField = {
                          title: thisSampleItem.ItemDetails[itemDet].ItemDetails_Name,

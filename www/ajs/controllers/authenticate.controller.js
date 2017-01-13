@@ -324,9 +324,11 @@ app.controller('app', ['$scope','seven','$state','services','fns',
 
 
                     var write = function(to_send) {
+                        // console.log(JSON.parse(to_send));
                         console.log('ok');
-                         services.master('OFC/factory/write.php',{data:to_send}).then(function(res){
-
+                         // services.master('OFC/factory/write.php',{data:to_send}).then(function(res){
+                         services.master('GetPostData/',to_send).then(function(res){
+                                console.log(res);
                         });
                     }
 
@@ -367,10 +369,12 @@ app.controller('app', ['$scope','seven','$state','services','fns',
                                         for (var t =0; t< to_convert.length; t++) {
                                             data_to_send.procurement[to_convert[t].p_index].ImageDetails[to_convert[t].i_index].Imagebase64 =to_convert[t].Imagebase64; 
                                         }
-                                        console.log(JSON.stringify(data_to_send));
+                                        // console.log(JSON.stringify(data_to_send));
+                                        console.log('sdfsdfsdfsdf');
                                         write(data_to_send);
                                     });
                             } else {
+                                        // write(data_to_send);
                                         console.log(JSON.stringify(data_to_send));
 
                             }
@@ -404,7 +408,6 @@ app.controller('app', ['$scope','seven','$state','services','fns',
 
              
                             for (var kl = 0;k = res.result.rows.length, kl< k; kl++) {
-
                                     var this_proc = {};
                                     for (var jj in res.result.rows.item(kl)) {
                                         if (jj!='JsonContent' ) {
@@ -417,12 +420,16 @@ app.controller('app', ['$scope','seven','$state','services','fns',
                                         }
 
                                     }
+
                                 
                                     var this_itemdetails = [];
                                     for( var jh in this_proc.ItemDetails){
+                                        console.log(this_proc.ItemDetails[jh]);
                                             this_itemdetails.push(this_proc.ItemDetails[jh])
                                     }                                
                                     this_proc.ItemDetails = this_itemdetails;
+
+
                                     fns.query('SELECT * FROM Test WHERE ProcurementId = ?',[this_proc.ProcurementId],function(res){
                                             var TestsJson = JSON.parse( res.result.rows.item(0).TestsJson);
                                             var this_testdetails = [];

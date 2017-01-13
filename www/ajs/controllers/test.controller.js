@@ -55,6 +55,7 @@ app.controller('tests', ['$scope','fns','seven','$stateParams', '$rootScope',
          }
 
          $rootScope.testUpdate = function(){
+            console.log($scope.tests_data);
                 var completed = 0;
                 if($scope.pro.completed) completed = new Date();
                 if(!already_started) already_started = new Date();
@@ -99,14 +100,12 @@ app.controller('tests_add', ['$scope','fns','seven','$stateParams', '$rootScope'
                 procurement_data = JsonContent;
 
                 $scope.tests =  sample_items[procurement_data.SampleItem_Id].ItemTests;
-                
              
                 for(i in $scope.tests) {
                      $scope.tests[i].TestMethod[0] = {'Method_Name':'--Select test method--','Method_ID':''};
                 }
                 fns.query('SELECT * FROM Test WHERE ProcurementId = ?',[$scope.id],function(res){
                         $scope.tests_data = JSON.parse(res.result.rows.item(0).TestsJson);
-                        console.log($scope.tests_data);
                         $scope.$apply();
                         seven.hidePreloader();
                 });
@@ -121,6 +120,7 @@ app.controller('tests_add', ['$scope','fns','seven','$stateParams', '$rootScope'
                 var tests_data = {};
 
                 for(var l in $scope.tests_data){
+                    $scope.tests_data[l]['TestID'] = $scope.tests[l]['TestID'] ;
                     if($scope.tests_data[l]['added']) tests_data[l] = $scope.tests_data[l]; 
                 }
                 seven.showPreloader('Updating..');
