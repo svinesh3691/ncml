@@ -13,7 +13,9 @@ app.factory("services", ['$http', function($http) {
     // var serviceBase = 'http://www.ncmlapi.kritilims.in/Service.asmx/';
     // var serviceBase = 'http://192.168.43.231/';
     // var serviceBase = 'http://52.172.1.50:160/Service.asmx/';
-    var serviceBase = 'http://192.169.189.135:100/Service.asmx/';
+    // var serviceBase = 'http://192.169.189.135:100/Service.asmx/';
+    // var serviceBase = 'http://52.172.1.50:160/Service.asmx/';
+    var serviceBase = 'http://104.211.243.33:120/Service.asmx/';
     
     var obj = {};
     obj.master = function(func_name,post_data){
