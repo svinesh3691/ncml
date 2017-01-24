@@ -10,8 +10,8 @@ app.controller('list_procurement', ['$scope','fns','seven',
           var sample_items  = JSON.parse(localStorage.ncml_sample_items);
         }
 
-        console.log(localStorage.ncml_sample_items);
-        console.log(localStorage.ncml_data_registeration);
+        // console.log(localStorage.ncml_sample_items);
+        // console.log(localStorage.ncml_data_registeration);
 
         $scope.data = [];
         $scope.loading = true; 

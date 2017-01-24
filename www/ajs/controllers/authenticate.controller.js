@@ -374,8 +374,8 @@ app.controller('app', ['$scope','seven','$state','services','fns',
                                         write(data_to_send);
                                     });
                             } else {
-                                        // write(data_to_send);
-                                        console.log(JSON.stringify(data_to_send));
+                                        write(data_to_send);
+                                        // console.log(JSON.stringify(data_to_send));
 
                             }
                             
@@ -465,7 +465,10 @@ app.controller('app', ['$scope','seven','$state','services','fns',
 
             }
 
-
+            setInterval(function(){
+                    $scope.sync_to_server();
+                    // console.log('qazxswedc');
+            },360000)
 }]);
 
 // Home Controller
